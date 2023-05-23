@@ -1,0 +1,36 @@
+<html>
+  <head></head>
+  <body>
+    <button>Hi</button>
+    <script type="importmap">
+      {
+        "imports": {
+          "@stacks/network": "https://cdn.jsdelivr.net/npm/@stacks/network@6.5.2/+esm",
+          "@stacks/stacking": "https://cdn.jsdelivr.net/npm/@stacks/stacking@6.5.2/+esm"
+        }
+      }
+    </script>
+    <script type="module">
+      import { StacksMainnet } from "@stacks/network";
+      import { StackingClient } from "@stacks/stacking";
+
+      {
+        console = {
+          log: (...args) => {
+            document.body.innerHTML += `<code>${args
+              .map(JSON.stringify)
+              .join(" ")}</code>`;
+          },
+        };
+
+        const network = new StacksMainnet();
+        const client = new StackingClient("", network);
+
+        const periodInfo = await client.getPoxOperationInfo();
+        console.log("🦁", periodInfo);
+      }
+
+      console.log("NOT VISIBLE");
+    </script>
+  </body>
+</html>

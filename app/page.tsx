@@ -6,26 +6,10 @@ import * as monaco_editor from "monaco-editor";
 import { regexTokeniser } from "../lib/auto-import";
 import AutoImport from "../lib/auto-import/auto-complete";
 
+import GENERATED from "../generated.json";
 const STACKS_JS_VERSION = "6.5.2";
 
-const packages = [
-  {
-    name: "@stacks/common",
-    files: [
-      "/dist/constants.d.ts",
-      "/dist/buffer.d.ts",
-      "/dist/errors.d.ts",
-      "/dist/config.d.ts",
-      "/dist/signatures.d.ts",
-      "/dist/keys.d.ts",
-      "/dist/utils.d.ts",
-      "/dist/logger.d.ts",
-      "/dist/index.d.ts",
-    ],
-  },
-];
-
-const deps: NodeModuleDep[] = packages.flatMap((pkg) =>
+const deps: NodeModuleDep[] = GENERATED.flatMap((pkg) =>
   pkg.files.map((path) => ({
     pkgName: pkg.name,
     pkgVersion: STACKS_JS_VERSION,

@@ -6,12 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate": "./scripts/generate.sh > generated.json"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.5.1",
     "@stacks/connect": "^7.3.1",
-    "@stacks/transactions": "^6.5.4",
     "@types/node": "20.2.1",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
@@ -24,5 +24,17 @@
     "react-dom": "18.2.0",
     "tailwindcss": "3.3.2",
     "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@stacks/auth": "^6.5.4",
+    "@stacks/blockchain-api-client": "^7.1.10",
+    "@stacks/common": "^6.5.2",
+    "@stacks/encryption": "^6.5.4",
+    "@stacks/network": "^6.5.4",
+    "@stacks/profile": "^6.5.4",
+    "@stacks/stacking": "^6.5.4",
+    "@stacks/storage": "^6.5.4",
+    "@stacks/transactions": "^6.5.4",
+    "@stacks/wallet-sdk": "^6.5.4"
   }
 }
