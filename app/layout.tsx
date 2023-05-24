@@ -22,17 +22,20 @@ export default function RootLayout({
         {
           `{
             "imports": {
-              "@stacks/common": "https://cdn.jsdelivr.net/npm/@stacks/common@6.5.2/+esm",
-              "@stacks/transactions": "https://cdn.jsdelivr.net/npm/@stacks/transactions@6.5.4/+esm",
-              "@stacks/network": "https://cdn.jsdelivr.net/npm/@stacks/network@6.5.4/+esm",
-              "@stacks/encryption": "https://cdn.jsdelivr.net/npm/@stacks/encryption@6.5.4/+esm",
-              "@stacks/profile": "https://cdn.jsdelivr.net/npm/@stacks/profile@6.5.4/+esm",
-              "@stacks/auth": "https://cdn.jsdelivr.net/npm/@stacks/auth@6.5.4/+esm",
-              "@stacks/storage": "https://cdn.jsdelivr.net/npm/@stacks/storage@6.5.4/+esm",
-              "@stacks/wallet-sdk": "https://cdn.jsdelivr.net/npm/@stacks/wallet-sdk@6.5.4/+esm",
-              "@stacks/blockchain-api-client": "https://cdn.jsdelivr.net/npm/@stacks/blockchain-api-client@7.2.0/+esm",
-              "@stacks/stacking": "https://cdn.jsdelivr.net/npm/@stacks/stacking@6.5.4/+esm",
-              "@stacks/connect": "https://cdn.jsdelivr.net/npm/@stacks/connect@7.3.1/+esm"
+              "@stacks/common": "https://esm.sh/@stacks/common@6.5.2",
+              "@stacks/transactions": "https://esm.sh/@stacks/transactions@6.5.4",
+              "@stacks/network": "https://esm.sh/@stacks/network@6.5.4",
+              "@stacks/encryption": "https://esm.sh/@stacks/encryption@6.5.4",
+              "@stacks/profile": "https://esm.sh/@stacks/profile@6.5.4",
+              "@stacks/auth": "https://esm.sh/@stacks/auth@6.5.4",
+              "@stacks/storage": "https://esm.sh/@stacks/storage@6.5.4",
+              "@stacks/wallet-sdk": "https://esm.sh/@stacks/wallet-sdk@6.5.4",
+              "@stacks/blockchain-api-client": "https://esm.sh/@stacks/blockchain-api-client@7.2.0",
+              "@stacks/stacking": "https://esm.sh/@stacks/stacking@6.5.4",
+              "@stacks/connect": "https://esm.sh/@stacks/connect@7.3.1",
+              "@noble/hashes/sha256": "https://esm.sh/@noble/hashes@1.3.0/sha256",
+              "crypto": "https://esm.sh/crypto-browserify@3.12.0",
+              "zone-file": "https://esm.sh/zone-file@1.0.0"
             }
           }`
         }
