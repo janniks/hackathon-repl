@@ -9,14 +9,23 @@ import { fetchDeps, fetchSnippet } from "@/app/utils";
 import RunButton from "./run-button";
 import Button from "./button";
 
+import GENERATED from "../generated.json";
+import { useHotkeys } from "react-hotkeys-hook";
 
-
-const WrappedEditor = ({ code }: { code: string }) => {
+const WrappedEditor = ({
+  code,
+  onChange,
+}: {
+  code: string;
+  onChange: (
+    value: string | undefined,
+    ev: monaco_editor.editor.IModelContentChangedEvent
+  ) => void;
+}) => {
   const [editor, setEditor] =
     useState<monaco_editor.editor.IStandaloneCodeEditor>();
 
   async function beforeMount(monaco: typeof monaco_editor) {
-
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
       target: monaco.languages.typescript.ScriptTarget.ES2016,
       allowNonTsExtensions: true,
@@ -39,7 +48,6 @@ const WrappedEditor = ({ code }: { code: string }) => {
     mountedEditor: monaco_editor.editor.IStandaloneCodeEditor,
     monaco: typeof monaco_editor
   ) {
-
     const deps = await fetchDeps();
     const files = deps.map((dep) => ({
       path: dep.path,
@@ -51,11 +59,9 @@ const WrappedEditor = ({ code }: { code: string }) => {
     setEditor(mountedEditor);
   }
 
-
   async function setSnippet(snippetName: string) {
     const snippet = await fetchSnippet(snippetName);
     editor?.setValue(snippet);
-
   }
 
   const editorContainer = {
@@ -72,9 +78,30 @@ const WrappedEditor = ({ code }: { code: string }) => {
         defaultValue={code}
         beforeMount={beforeMount}
         onMount={onMount}
+        onChange={onChange}
       />
-      {editor ? <RunButton editor={editor} /> : <Button text="Run" disabled={true}></Button>}
-      <Button onclick={async ()=> {await setSnippet("test")}} text={"Get Test Snippet"}></Button>
+      <div className="flex justify-between my-3">
+        {editor ? (
+          <RunButton editor={editor} />
+        ) : (
+          <Button text="Run" disabled={true}></Button>
+        )}
+        <Button
+          onclick={async () => {
+            await setSnippet("test");
+          }}
+          text={"Get Test Snippet"}
+        ></Button>
+        <div className="flex justify-center text-gray-600 cursor-default">
+          <div className="flex items-center justify-center pr-0.5 w-[31px] h-[25px] border shadow-[0_1px_1px_1px_rgba(0,0,0,0.15)]  rounded-lg border-gray-400 text-gray-500 bg-gray-200">
+            ⌘
+          </div>
+          <div className="mx-0.5">+</div>
+          <div className="flex items-center justify-center w-[31px] h-[25px] border shadow-[0_1px_1px_1px_rgba(0,0,0,0.15)]  rounded-lg border-gray-400 text-gray-500 bg-gray-200 text-[12px]">
+            ⏎
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

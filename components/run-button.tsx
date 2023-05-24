@@ -1,9 +1,12 @@
-
 import * as monaco_editor from "monaco-editor";
 import Button from "./button";
+import { useHotkeys } from "react-hotkeys-hook";
 
-const RunButton = ({ editor }: { editor: monaco_editor.editor.IStandaloneCodeEditor}) => {
-
+const RunButton = ({
+  editor,
+}: {
+  editor: monaco_editor.editor.IStandaloneCodeEditor;
+}) => {
   async function runCode() {
     const code = editor.getValue();
     const script = document.createElement("script");
@@ -75,9 +78,22 @@ const RunButton = ({ editor }: { editor: monaco_editor.editor.IStandaloneCodeEdi
 
     document.head.appendChild(script);
   }
-    return <Button
-        text={"Run"}
-        onclick={runCode}
-    ></Button>
-}
+
+  // hot key for inside the editor
+  editor?.addAction({
+    id: "runit",
+    label: "Run it!",
+    keybindings: [
+      monaco_editor.KeyMod.CtrlCmd | monaco_editor.KeyCode.Enter,
+      monaco_editor.KeyMod.WinCtrl | monaco_editor.KeyCode.Enter,
+    ],
+    contextMenuGroupId: "2_execution",
+    run: runCode,
+  });
+
+  // hot key for outside the editor
+  useHotkeys(["ctrl+enter", "meta+enter"], runCode, []);
+
+  return <Button text={"Run"} onclick={runCode} />;
+};
 export default RunButton;
