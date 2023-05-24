@@ -1,3 +1,4 @@
+import Script from 'next/script'
 import './globals.css'
 import { Inter } from 'next/font/google'
 
@@ -15,7 +16,28 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {children}
+        <Script type="importmap" id="importmap">
+        {
+          `{
+            "imports": {
+              "@stacks/common": "https://cdn.jsdelivr.net/npm/@stacks/common@6.5.2/+esm",
+              "@stacks/transactions": "https://cdn.jsdelivr.net/npm/@stacks/transactions@6.5.4/+esm",
+              "@stacks/network": "https://cdn.jsdelivr.net/npm/@stacks/network@6.5.4/+esm",
+              "@stacks/encryption": "https://cdn.jsdelivr.net/npm/@stacks/encryption@6.5.4/+esm",
+              "@stacks/profile": "https://cdn.jsdelivr.net/npm/@stacks/profile@6.5.4/+esm",
+              "@stacks/auth": "https://cdn.jsdelivr.net/npm/@stacks/auth@6.5.4/+esm",
+              "@stacks/storage": "https://cdn.jsdelivr.net/npm/@stacks/storage@6.5.4/+esm",
+              "@stacks/wallet-sdk": "https://cdn.jsdelivr.net/npm/@stacks/wallet-sdk@6.5.4/+esm",
+              "@stacks/blockchain-api-client": "https://cdn.jsdelivr.net/npm/@stacks/blockchain-api-client@7.2.0/+esm",
+              "@stacks/stacking": "https://cdn.jsdelivr.net/npm/@stacks/stacking@6.5.4/+esm",
+              "@stacks/connect": "https://cdn.jsdelivr.net/npm/@stacks/connect@7.3.1/+esm"
+            }
+          }`
+        }
+        </Script>
+      </body>
     </html>
   )
 }
