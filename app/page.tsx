@@ -13,7 +13,7 @@ const Page = () => {
           ))}
         </div>
       </main>
-      <WrappedEditor code={`// my comment`} />
+      <WrappedEditor defaultCode={`// my comment`} />
     </div>
   );
 };

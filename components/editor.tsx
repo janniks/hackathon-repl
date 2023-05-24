@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Editor from "@monaco-editor/react";
 import * as monaco_editor from "monaco-editor";
 
@@ -11,9 +11,14 @@ import Button from "./button";
 
 
 
-const WrappedEditor = ({ code }: { code: string }) => {
+const WrappedEditor = ({ defaultCode }: { defaultCode: string }) => {
   const [editor, setEditor] =
     useState<monaco_editor.editor.IStandaloneCodeEditor>();
+  const [code, setCode] = useState<string>();
+
+  useEffect(() => {
+    editor?.setValue(code || defaultCode)
+  }, [code, editor, defaultCode]);
 
   async function beforeMount(monaco: typeof monaco_editor) {
 
@@ -33,6 +38,8 @@ const WrappedEditor = ({ code }: { code: string }) => {
         `file://${dep.path}`
       );
     }
+
+    setCode(await fetchSnippet("default"));
   }
 
   async function onMount(
@@ -69,7 +76,7 @@ const WrappedEditor = ({ code }: { code: string }) => {
         theme="vs-dark"
         height="500px"
         defaultLanguage="typescript"
-        defaultValue={code}
+        defaultValue={code || defaultCode}
         beforeMount={beforeMount}
         onMount={onMount}
       />
