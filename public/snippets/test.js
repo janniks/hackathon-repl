@@ -18,3 +18,5 @@ const functionArgs = [
   standardPrincipalCV("STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6"),
   trueCV(),
 ];
+
+console.log(functionArgs);
