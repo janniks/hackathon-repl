@@ -38,7 +38,7 @@ export default function RootLayout({
         </nav>
 
         <div className="flex-1 flex justify-between p-10">
-          <main className="flex-1 flex flex-col bg-green-800">{children}</main>
+          <main className="flex-1 flex flex-col bg-gray-200">{children}</main>
           {/* sidebar */}
           <div className="flex flex-col bg-red-800 min-w-[20rem]">
             {/* example snippets */}

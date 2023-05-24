@@ -7,6 +7,7 @@ import { regexTokeniser } from "../lib/auto-import";
 import AutoImport from "../lib/auto-import/auto-complete";
 
 import GENERATED from "../generated.json";
+import { useHotkeys } from "react-hotkeys-hook";
 
 const deps: NodeModuleDep[] = GENERATED.flatMap((pkg) =>
   pkg.files.map((path) => ({
@@ -17,7 +18,16 @@ const deps: NodeModuleDep[] = GENERATED.flatMap((pkg) =>
   }))
 );
 
-const WrappedEditor = ({ code }: { code: string }) => {
+const WrappedEditor = ({
+  code,
+  onChange,
+}: {
+  code: string;
+  onChange: (
+    value: string | undefined,
+    ev: monaco_editor.editor.IModelContentChangedEvent
+  ) => void;
+}) => {
   const [editor, setEditor] =
     useState<monaco_editor.editor.IStandaloneCodeEditor>();
 
@@ -142,6 +152,14 @@ const WrappedEditor = ({ code }: { code: string }) => {
     document.head.appendChild(script);
   }
 
+  editor?.addAction({
+    id: "runit",
+    label: "Run it!",
+    keybindings: [monaco_editor.KeyMod.CtrlCmd | monaco_editor.KeyCode.Enter],
+    contextMenuGroupId: "2_execution",
+    run: runit,
+  });
+
   // async function fetchSnippet(snippetName: string) {
   //   const cache = await caches.open("snippets");
   //   const req = new Request(`/snippets/${snippetName}.js`);
@@ -163,8 +181,20 @@ const WrappedEditor = ({ code }: { code: string }) => {
         defaultValue={code}
         beforeMount={beforeMount}
         onMount={onMount}
+        onChange={onChange}
       />
-      <button onClick={runit}>Run It</button>
+      <div className="flex justify-between my-3">
+        <button onClick={runit}>Run It</button>
+        <div className="flex justify-center text-gray-600 cursor-default">
+          <div className="flex items-center justify-center pr-0.5 w-[31px] h-[25px] border shadow-[0_1px_1px_1px_rgba(0,0,0,0.15)]  rounded-lg border-gray-400 text-gray-500 bg-gray-200">
+            ⌘
+          </div>
+          <div className="mx-0.5">+</div>
+          <div className="flex items-center justify-center w-[31px] h-[25px] border shadow-[0_1px_1px_1px_rgba(0,0,0,0.15)]  rounded-lg border-gray-400 text-gray-500 bg-gray-200 text-[12px]">
+            ⏎
+          </div>
+        </div>
+      </div>
       {/* <button
         onClick={() => {
           fetchSnippet("test");
