@@ -142,6 +142,13 @@ export default function Home() {
     document.head.appendChild(script);
   };
 
+  async function fetchSnippet(snippetName: string) {
+    const cache = await caches.open("snippets");
+    const req = new Request(`/snippets/${snippetName}.js`);
+    const snippet = await fetchOrGetFromCache(cache, req);
+    editor?.setValue(snippet);
+  }
+
   const editorContainer = {
     width: "80%",
     margin: "auto",
@@ -158,15 +165,12 @@ export default function Home() {
         onMount={onMount}
       />
       <button onClick={runit}>Run It</button>
+      <button onClick={() => {fetchSnippet("test")}}>Get Test Snippet</button>
     </div>
   );
 }
-// Some methods adapted from qwik https://github.com/BuilderIO/qwik
-// MIT License Copyright (c) 2021 BuilderIO
 
-const fetchDep = async (cache: Cache, dep: NodeModuleDep) => {
-  const url = getCdnUrl(dep.pkgName, dep.pkgVersion, dep.pkgPath);
-  const req = new Request(url);
+const fetchOrGetFromCache = async (cache: Cache, req: Request) => {
   const cachedRes = await cache.match(req);
   if (cachedRes) {
     return cachedRes.clone().text();
@@ -178,7 +182,15 @@ const fetchDep = async (cache: Cache, dep: NodeModuleDep) => {
     }
     return fetchRes.clone().text();
   }
-  throw new Error(`Unable to fetch: ${url}`);
+  throw new Error(`Unable to fetch: ${req.url}`);
+}
+
+// Some methods adapted from qwik https://github.com/BuilderIO/qwik
+// MIT License Copyright (c) 2021 BuilderIO
+const fetchDep = async (cache: Cache, dep: NodeModuleDep) => {
+  const url = getCdnUrl(dep.pkgName, dep.pkgVersion, dep.pkgPath);
+  const req = new Request(url);
+  return await fetchOrGetFromCache(cache, req);
 };
 
 const getCdnUrl = (pkgName: string, pkgVersion: string, pkgPath: string) => {
