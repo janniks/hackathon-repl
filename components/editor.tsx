@@ -5,31 +5,15 @@ import * as monaco_editor from "monaco-editor";
 
 import { regexTokeniser } from "../lib/auto-import";
 import AutoImport from "../lib/auto-import/auto-complete";
+import { fetchDeps, fetchSnippet } from "@/app/utils";
 
-import GENERATED from "../generated.json";
 
-const deps: NodeModuleDep[] = GENERATED.flatMap((pkg) =>
-  pkg.files.map((path) => ({
-    pkgName: pkg.name,
-    pkgVersion: pkg.version,
-    pkgPath: path,
-    path: `/node_modules/${pkg.name}${path}`,
-  }))
-);
 
 const WrappedEditor = ({ code }: { code: string }) => {
   const [editor, setEditor] =
     useState<monaco_editor.editor.IStandaloneCodeEditor>();
 
   async function beforeMount(monaco: typeof monaco_editor) {
-    const cache = await caches.open("repl");
-
-    const fetched = await Promise.all([
-      ...deps.map(async (dep) => {
-        const code = await fetchDep(cache, dep);
-        return { ...dep, code };
-      }),
-    ]);
 
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
       target: monaco.languages.typescript.ScriptTarget.ES2016,
@@ -40,12 +24,12 @@ const WrappedEditor = ({ code }: { code: string }) => {
       typeRoots: ["node_modules/@types"],
     });
 
-    for (const dep of fetched) {
+    const deps = await fetchDeps();
+    for (const dep of deps) {
       monaco.languages.typescript.typescriptDefaults.addExtraLib(
         `declare module '${dep.pkgName}' { ${dep.code} }`,
         `file://${dep.path}`
       );
-      console.log("Monaco: addExtraLib ", dep.path, dep.code);
     }
   }
 
@@ -53,22 +37,16 @@ const WrappedEditor = ({ code }: { code: string }) => {
     mountedEditor: monaco_editor.editor.IStandaloneCodeEditor,
     monaco: typeof monaco_editor
   ) {
-    setEditor(mountedEditor);
-    const cache = await caches.open("repl");
 
-    const fetched = await Promise.all([
-      ...deps.map(async (dep) => {
-        const code = await fetchDep(cache, dep);
-        return { ...dep, code };
-      }),
-    ]);
-    const files = fetched.map((dep) => ({
+    const deps = await fetchDeps();
+    const files = deps.map((dep) => ({
       path: dep.path,
       aliases: [dep.pkgName],
       imports: regexTokeniser(dep.code),
     }));
     const completor = new AutoImport({ monaco, editor: mountedEditor });
     completor.imports.saveFiles(files);
+    setEditor(mountedEditor);
   }
 
   async function runit() {
