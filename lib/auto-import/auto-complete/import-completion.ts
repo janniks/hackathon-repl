@@ -43,7 +43,7 @@ class ImportCompletion implements Monaco.languages.CompletionItemProvider {
         imp
       ),
       range: undefined as unknown as Monaco.IRange,
-      insertText: "",
+      insertText: imp.name,
     };
   }
 
