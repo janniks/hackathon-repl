@@ -51,18 +51,41 @@ const EditorPage = () => {
   }, [id, hasMounted]);
   if (!hasMounted) return null; // todo: fix this?
 
-  const code = param
-    ? bytesToUtf8(base64url.decode(param))
+  const checkVideoMap = (player: any, map: [number, string][]) => {
+    if (player) {
+      const playerTimestamp: number = player.getCurrentTime();
+      for (const [mapTimestamp, mapCode] of map) {
+        if (playerTimestamp <= mapTimestamp) {
+          setVideoCode(mapCode);
+          break;
+        }
+      }
+    }
+  };
+
+  const code = videoCode
+    ? videoCode
+    : codeParam
+    ? bytesToUtf8(base64url.decode(codeParam))
     : "// Write your code here";
 
   return (
     <div className="p-4">
       <h2 className="text-lg mb-3">My Snippet</h2>
       {description ? (
-      <div>
-        <div>Description</div>
+        <div>
+          <div>Description</div>
           <p>{description}</p>
-      </div>
+        </div>
+      ) : (
+        <></>
+      )}
+      {videoSrc && videoMap ? (
+        <VideoPlayer
+          id={videoSrc}
+          map={videoMap as any}
+          checkVideoMap={checkVideoMap}
+        ></VideoPlayer>
       ) : (
         <></>
       )}

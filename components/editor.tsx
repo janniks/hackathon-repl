@@ -1,11 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Editor from "@monaco-editor/react";
 import * as monaco_editor from "monaco-editor";
 
 import { regexTokeniser } from "../lib/auto-import";
 import AutoImport from "../lib/auto-import/auto-complete";
-import { fetchDeps, fetchSnippet } from "@/app/utils";
+import { fetchDeps } from "@/app/utils";
 import RunButton from "./run-button";
 import Button from "./button";
 
@@ -24,6 +24,11 @@ const WrappedEditor = ({
 }) => {
   const [editor, setEditor] =
     useState<monaco_editor.editor.IStandaloneCodeEditor>();
+
+  useEffect(() => {
+    if (!editor) return;
+    editor.setValue(code);
+  }, [code, editor]);
 
   async function beforeMount(monaco: typeof monaco_editor) {
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({

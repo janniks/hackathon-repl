@@ -89,6 +89,7 @@ export default function RootLayout({
             }
           }`}
         </Script>
+        <Script src="https://www.youtube.com/iframe_api"></Script>
         <footer className="p-10 bg-blue-800">Footer</footer>
       </body>
     </html>
