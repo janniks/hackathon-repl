@@ -88,6 +88,17 @@ const EditorPage = () => {
     window.history.pushState({}, "", `${pathname}?${s.toString()}`);
   }, 500);
 
+  const consoleStyles = {
+    minHeight: "100px",
+    background: "#232328",
+    borderTop: "solid 1px #18181c",
+    padding: "1em",
+    color: "#d6d3d2",
+    overflow: "scroll",
+    fontSize: "12px",
+    maxHeight: "300px",
+  };
+
   return (
     <div
       className="text-white border border-zinc-500 p-4 space-y-4 bg-zinc-700 shadow-[0_2px_2px_0_rgba(0,0,0,0.9)] rounded-lg"
@@ -116,43 +127,48 @@ const EditorPage = () => {
         )}
       </div>
 
-      <WrappedEditor
-        code={codeDecoded}
-        onChange={(value, event) => {
-          if (shouldUpdate) {
-            const timestamp = player?.getCurrentTime();
-            const wanted = getWantedCode(timestamp, videoMap);
-            if (value !== wanted) setShouldUpdate(false);
-          }
-          updateSearchParamsDebounced(value, event);
-        }}
-      />
-
-      <div className="flex justify-between my-3">
-        {editor && <RunButton />}
-        {editor && (
-          <Button
-            onClick={() => {
+      {/* EDITOR + CONSOLE */}
+      <div>
+        <WrappedEditor
+          code={codeDecoded}
+          onChange={(value, event) => {
+            if (shouldUpdate) {
               const timestamp = player?.getCurrentTime();
-              const code = getWantedCode(timestamp, videoMap);
-              editor?.setValue(code);
-              setShouldUpdate(true);
-            }}
-            disabled={shouldUpdate}
-            text="Reset"
-          />
-        )}
-        <div className="flex justify-center text-gray-600 cursor-default">
-          <div className="flex items-center justify-center pr-0.5 w-[31px] h-[25px] border shadow-[0_1px_1px_1px_rgba(0,0,0,0.15)]  rounded-lg border-gray-400 text-gray-500 bg-gray-200">
+              const wanted = getWantedCode(timestamp, videoMap);
+              if (value !== wanted) setShouldUpdate(false);
+            }
+            updateSearchParamsDebounced(value, event);
+          }}
+        />
+        <div id="console-container" style={consoleStyles} />
+      </div>
+
+      {/* BUTTONS */}
+      <div className="flex justify-between my-3">
+        <div>
+          {editor && <RunButton />}
+          {editor && (
+            <Button
+              onClick={() => {
+                const code = getWantedCode(player?.getCurrentTime(), videoMap);
+                editor?.setValue(code);
+                setShouldUpdate(true);
+              }}
+              disabled={shouldUpdate}
+              text="Reset"
+            />
+          )}
+        </div>
+        <div className="flex justify-center text-zinc-600 cursor-default">
+          <div className="flex items-center justify-center pr-0.5 w-[31px] h-[25px] border shadow-[0_2px_2px_0_rgba(0,0,0,0.4)] rounded-lg border-zinc-700 text-zinc-600 bg-zinc-300">
             ⌘
           </div>
-          <div className="mx-0.5">+</div>
-          <div className="flex items-center justify-center w-[31px] h-[25px] border shadow-[0_1px_1px_1px_rgba(0,0,0,0.15)]  rounded-lg border-gray-400 text-gray-500 bg-gray-200 text-[12px]">
+          <div className="mx-0.5 text-zinc-300">+</div>
+          <div className="flex items-center justify-center w-[31px] h-[25px] border shadow-[0_2px_2px_0_rgba(0,0,0,0.4)] rounded-lg border-zinc-700 text-zinc-600 bg-zinc-300 text-[12px]">
             ⏎
           </div>
         </div>
       </div>
-      <div id="console-container" />
     </div>
   );
 };
