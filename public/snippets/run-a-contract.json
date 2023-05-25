@@ -1,0 +1,26 @@
+{
+  "description": "This is an example of how to run a contract. Play the video and follow along in the live code editor!",
+  "videoSrc": "M7lc1UVf-VE",
+  "videoMap": [
+    [5, ""],
+    [5.5, "con"],
+    [6, "conso"],
+    [6.5, "console"],
+    [7, "console"],
+    [7.5, "console.l"],
+    [8, "console.log"],
+    [8.5, "console.log('"],
+    [9, "console.log('te"],
+    [9.5, "console.log('test"],
+    [10, "console.log('testin"],
+    [10.5, "console.log('testing some "],
+    [11, "console.log('testing some st"],
+    [11.5, "console.log('testing some stig"],
+    [12, "console.log('testing some st"],
+    [12.5, "console.log('testing some stuf"],
+    [13, "console.log('testing some stuff "],
+    [13.5, "console.log('testing some stuff he"],
+    [14, "console.log('testing some stuff here"],
+    [14.5, "console.log('testing some stuff here')"]
+  ]
+}

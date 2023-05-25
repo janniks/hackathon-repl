@@ -59,11 +59,6 @@ const WrappedEditor = ({
     setEditor(mountedEditor);
   }
 
-  async function setSnippet(snippetName: string) {
-    const snippet = await fetchSnippet(snippetName);
-    editor?.setValue(snippet);
-  }
-
   const editorContainer = {
     width: "80%",
     margin: "auto",
@@ -86,12 +81,6 @@ const WrappedEditor = ({
         ) : (
           <Button text="Run" disabled={true}></Button>
         )}
-        <Button
-          onclick={async () => {
-            await setSnippet("test");
-          }}
-          text={"Get Test Snippet"}
-        ></Button>
         <div className="flex justify-center text-gray-600 cursor-default">
           <div className="flex items-center justify-center pr-0.5 w-[31px] h-[25px] border shadow-[0_1px_1px_1px_rgba(0,0,0,0.15)]  rounded-lg border-gray-400 text-gray-500 bg-gray-200">
             ⌘

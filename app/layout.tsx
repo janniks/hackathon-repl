@@ -54,7 +54,7 @@ export default function RootLayout({
                           className="bg-slate-500 font-mono px-1 py-0.5 rounded text-sm"
                           href={`editor?code=${base64url.encode(
                             utf8ToBytes(item.code)
-                          )}`}
+                          )}${item.id ? `&id=${item.id}` : ""}`}
                         >
                           Load {">"}
                         </Link>
