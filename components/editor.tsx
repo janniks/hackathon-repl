@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchDeps } from "@/app/utils";
+import { fetchDeps, getCustomTheme } from "@/app/utils";
 import Editor from "@monaco-editor/react";
 import { useAtom } from "jotai";
 import * as monaco_editor from "monaco-editor";
@@ -30,6 +30,9 @@ const WrappedEditor = ({
       typeRoots: ["node_modules/@types"],
     });
 
+    monaco.editor.defineTheme("hiroic", getCustomTheme());
+    monaco.editor.setTheme("hiroic");
+
     const deps = await fetchDeps();
     for (const dep of deps) {
       monaco.languages.typescript.typescriptDefaults.addExtraLib(
@@ -57,7 +60,7 @@ const WrappedEditor = ({
   return (
     <div id="editor-container">
       <Editor
-        theme="vs-dark"
+        theme="hiroic"
         height="500px"
         defaultLanguage="typescript"
         defaultValue={code}
