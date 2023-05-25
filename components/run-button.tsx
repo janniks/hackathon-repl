@@ -69,6 +69,7 @@ const RunButton = () => {
             }
         };
         ${code}
+        console = oldConsole;
     `;
     script.innerHTML = consoleCode;
     script.setAttribute("type", "module");
