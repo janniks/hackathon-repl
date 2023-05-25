@@ -1,6 +1,5 @@
 import * as monaco_editor from "monaco-editor";
 import Button from "./button";
-import { useHotkeys } from "react-hotkeys-hook";
 import { useAtom } from "jotai";
 import { editorAtom } from "../lib/atoms";
 
@@ -95,6 +94,6 @@ const RunButton = () => {
   // hot key for outside the editor
   //   useHotkeys(["ctrl+enter", "meta+enter"], runCode, []);
 
-  return <Button text={"Run"} onclick={runCode} />;
+  return <Button text={"Run"} onClick={runCode} />;
 };
 export default RunButton;
