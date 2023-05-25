@@ -1,17 +1,11 @@
 "use client";
-import {
-  Editable,
-  EditableInput,
-  EditableTextarea,
-  EditablePreview,
-} from "@chakra-ui/react";
 import VideoPlayer, { getWantedCode } from "@/components/video-player";
 import { base64url } from "@scure/base";
 import { debounce } from "debounce";
 import { useAtom } from "jotai";
 import * as monaco_editor from "monaco-editor";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { CSSProperties, HTMLAttributes, useEffect, useState } from "react";
 
 import Button from "../../components/button";
 import WrappedEditor from "../../components/editor";
@@ -82,16 +76,19 @@ const EditorPage = () => {
     window.history.pushState({}, "", `${pathname}?${s.toString()}`);
   }, 500);
 
-  const updateDescriptionDebounced = debounce((value: string | undefined) => {
+  const updateDescriptionDebounced = debounce((value: string | null) => {
     const s = new URLSearchParams(Array.from(searchParams.entries()));
     s.set("d", base64url.encode(utf8ToBytes(value ?? "")));
     window.history.pushState({}, "", `${pathname}?${s.toString()}`);
   }, 500);
 
-  const consoleStyles = {
+  const consoleStyles: CSSProperties = {
     minHeight: "100px",
     background: "#232328",
-    borderTop: "solid 1px #18181c",
+    opacity: 0.9,
+    borderTop: "solid 3px #18181c",
+    borderBottomLeftRadius: "4px",
+    borderBottomRightRadius: "4px",
     padding: "1em",
     color: "#d6d3d2",
     overflow: "scroll",
@@ -110,36 +107,41 @@ const EditorPage = () => {
         defaultValue={titleDecoded}
         onChange={(e) => updateTitleDebounced(e.target.value)}
       />
-      <div className="text-zinc-200 flex flex-col justify-between">
-        <textarea
-          className="bg-transparent"
-          placeholder="Description"
-          defaultValue={descriptionDecoded}
-          onChange={(e) => updateDescriptionDebounced(e.target.value)}
-        />
-        {videoSrc && videoMap && (
-          <VideoPlayer
-            key={id}
-            id={videoSrc}
-            map={videoMap as any}
-            shouldUpdate={shouldUpdate}
-          />
-        )}
+      <div
+        contentEditable={true}
+        role="textbox"
+        className="fake-placeholder-description w-full text-zinc-200 bg-transparent whitespace-break-spaces"
+        placeholder="Description"
+        onInput={(e) => updateDescriptionDebounced(e.currentTarget.innerText)}
+      >
+        {descriptionDecoded}
       </div>
+
+      {/* YOUTUBE */}
+      {videoSrc && videoMap && (
+        <VideoPlayer
+          key={id}
+          id={videoSrc}
+          map={videoMap as any}
+          shouldUpdate={shouldUpdate}
+        />
+      )}
 
       {/* EDITOR + CONSOLE */}
       <div>
-        <WrappedEditor
-          code={codeDecoded}
-          onChange={(value, event) => {
-            if (shouldUpdate) {
-              const timestamp = player?.getCurrentTime();
-              const wanted = getWantedCode(timestamp, videoMap);
-              if (value !== wanted) setShouldUpdate(false);
-            }
-            updateSearchParamsDebounced(value, event);
-          }}
-        />
+        <div className="rounded-t-lg pt-2 bg-[#232329]">
+          <WrappedEditor
+            code={codeDecoded}
+            onChange={(value, event) => {
+              if (shouldUpdate) {
+                const timestamp = player?.getCurrentTime();
+                const wanted = getWantedCode(timestamp, videoMap);
+                if (value !== wanted) setShouldUpdate(false);
+              }
+              updateSearchParamsDebounced(value, event);
+            }}
+          />
+        </div>
         <div id="console-container" style={consoleStyles} />
       </div>
 

@@ -26,6 +26,7 @@ body {
     rgb(var(--background-start-rgb));
 } */
 
-div.monaco-editor {
-  padding-top: 10px !important;
+.fake-placeholder-description:empty::before {
+  content: "Description";
+  color: gray;
 }
