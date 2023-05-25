@@ -120,21 +120,23 @@ const EditorPage = () => {
       <div id="console-container" style={consoleStyles} />
 
       <div className="flex justify-between my-3">
-        {editor && <RunButton />}
-        {editor && (
-          <Button
-            onClick={() => {
-              const timestamp = player?.getCurrentTime();
-              const code = getWantedCode(timestamp, videoMap);
-              editor?.setValue(code);
-              editor?.focus();
-              editor?.render(true);
-              setShouldUpdate(true);
-            }}
-            disabled={shouldUpdate}
-            text="Reset"
-          />
-        )}
+        <div>
+          {editor && <RunButton />}
+          {editor && (
+            <Button
+              onClick={() => {
+                const timestamp = player?.getCurrentTime();
+                const code = getWantedCode(timestamp, videoMap);
+                editor?.setValue(code);
+                editor?.focus();
+                editor?.render(true);
+                setShouldUpdate(true);
+              }}
+              disabled={shouldUpdate}
+              text="Reset"
+            />
+          )}
+        </div>
         <div className="flex justify-center text-gray-600 cursor-default">
           <div className="flex items-center justify-center pr-0.5 w-[31px] h-[25px] border shadow-[0_1px_1px_1px_rgba(0,0,0,0.15)]  rounded-lg border-gray-400 text-gray-500 bg-gray-200">
             ⌘
