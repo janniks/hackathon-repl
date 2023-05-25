@@ -75,6 +75,17 @@ const EditorPage = () => {
     1500
   );
 
+  const consoleStyles = {
+    minHeight: "100px",
+    background: "#232328",
+    borderTop: "solid 1px #18181c",
+    padding: "1em",
+    color: "#d6d3d2",
+    overflow: "scroll",
+    fontSize: "12px",
+    maxHeight: "300px",
+  };
+
   return (
     <div className="p-4" key={id}>
       <h2 className="text-lg mb-3">{id}</h2>
@@ -106,6 +117,7 @@ const EditorPage = () => {
           updateSearchParamsDebounced(value, event);
         }}
       />
+      <div id="console-container" style={consoleStyles} />
 
       <div className="flex justify-between my-3">
         {editor && <RunButton />}
@@ -133,7 +145,6 @@ const EditorPage = () => {
           </div>
         </div>
       </div>
-      <div id="console-container" />
     </div>
   );
 };
