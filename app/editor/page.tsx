@@ -1,8 +1,11 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import debouce, { debounce } from "debounce";
 import { base64url } from "@scure/base";
+import { debounce } from "debounce";
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+import { useUpdate } from "react-use";
+
 import WrappedEditor from "../../components/editor";
 import { bytesToUtf8, utf8ToBytes } from "../../lib/helpers";
 import { useHasMounted } from "../../lib/hooks";
@@ -10,17 +13,18 @@ import { useHasMounted } from "../../lib/hooks";
 const EditorPage = () => {
   const hasMounted = useHasMounted();
   const pathname = usePathname();
-
-  if (!hasMounted) return null; // todo: fix this?
+  const update = useUpdate();
 
   const url = new URL(window.location.href);
   const searchParams = new URLSearchParams(url.search);
 
-  const param = searchParams.get("code");
+  const c = searchParams.get("c");
+  const code = paramToCode(c);
 
-  const code = param
-    ? bytesToUtf8(base64url.decode(param))
-    : "// Write your code here";
+  // rerender if intendend code changes (e.g. URL changes)
+  useEffect(update, [update, code]);
+
+  if (!hasMounted) return null; // todo: fix this?
 
   return (
     <div className="p-4">
@@ -32,7 +36,7 @@ const EditorPage = () => {
       <WrappedEditor
         code={code}
         onChange={debounce((value) => {
-          searchParams.set("code", base64url.encode(utf8ToBytes(value ?? "")));
+          searchParams.set("c", base64url.encode(utf8ToBytes(value ?? "")));
           window.history.pushState(
             {},
             "",
@@ -45,3 +49,13 @@ const EditorPage = () => {
 };
 
 export default EditorPage;
+
+function paramToCode(param: string | null) {
+  try {
+    return param
+      ? bytesToUtf8(base64url.decode(param))
+      : "// Write your code here";
+  } catch (_) {
+    return "// Write your code here";
+  }
+}

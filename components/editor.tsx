@@ -1,16 +1,13 @@
 "use client";
-import React, { useState } from "react";
 import Editor from "@monaco-editor/react";
 import * as monaco_editor from "monaco-editor";
+import { useEffect, useState } from "react";
 
+import { fetchDeps, fetchSnippet } from "@/app/utils";
 import { regexTokeniser } from "../lib/auto-import";
 import AutoImport from "../lib/auto-import/auto-complete";
-import { fetchDeps, fetchSnippet } from "@/app/utils";
-import RunButton from "./run-button";
 import Button from "./button";
-
-import GENERATED from "../generated.json";
-import { useHotkeys } from "react-hotkeys-hook";
+import RunButton from "./run-button";
 
 const WrappedEditor = ({
   code,
@@ -64,6 +61,10 @@ const WrappedEditor = ({
     editor?.setValue(snippet);
   }
 
+  useEffect(() => {
+    editor?.setValue(code);
+  }, [editor, code]);
+
   const editorContainer = {
     width: "80%",
     margin: "auto",
@@ -84,20 +85,20 @@ const WrappedEditor = ({
         {editor ? (
           <RunButton editor={editor} />
         ) : (
-          <Button text="Run" disabled={true}></Button>
+          <Button text="Run" disabled={true} />
         )}
         <Button
           onclick={async () => {
             await setSnippet("test");
           }}
           text={"Get Test Snippet"}
-        ></Button>
+        />
         <div className="flex justify-center text-gray-600 cursor-default">
-          <div className="flex items-center justify-center pr-0.5 w-[31px] h-[25px] border shadow-[0_1px_1px_1px_rgba(0,0,0,0.15)]  rounded-lg border-gray-400 text-gray-500 bg-gray-200">
+          <div className="flex items-center justify-center pr-0.5 w-[31px] h-[25px] border shadow-[0_1px_1px_1px_rgba(0,0,0,0.15)] rounded-lg border-gray-400 text-gray-500 bg-gray-200">
             ⌘
           </div>
           <div className="mx-0.5">+</div>
-          <div className="flex items-center justify-center w-[31px] h-[25px] border shadow-[0_1px_1px_1px_rgba(0,0,0,0.15)]  rounded-lg border-gray-400 text-gray-500 bg-gray-200 text-[12px]">
+          <div className="flex items-center justify-center w-[31px] h-[25px] border shadow-[0_1px_1px_1px_rgba(0,0,0,0.15)] rounded-lg border-gray-400 text-gray-500 bg-gray-200 text-[12px]">
             ⏎
           </div>
         </div>

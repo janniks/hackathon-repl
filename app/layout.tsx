@@ -52,7 +52,7 @@ export default function RootLayout({
                       <div>
                         <Link
                           className="bg-slate-500 font-mono px-1 py-0.5 rounded text-sm"
-                          href={`editor?code=${base64url.encode(
+                          href={`editor?c=${base64url.encode(
                             utf8ToBytes(item.code)
                           )}`}
                         >
