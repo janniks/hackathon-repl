@@ -1,26 +1,35 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import debouce, { debounce } from "debounce";
+import VideoPlayer, { getWantedCode } from "@/components/video-player";
 import { base64url } from "@scure/base";
+import { debounce } from "debounce";
+import { useAtom } from "jotai";
+import * as monaco_editor from "monaco-editor";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+
+import Button from "../../components/button";
 import WrappedEditor from "../../components/editor";
+import RunButton from "../../components/run-button";
+import { editorAtom, playerAtom } from "../../lib/atoms";
 import { bytesToUtf8, utf8ToBytes } from "../../lib/helpers";
 import { useHasMounted } from "../../lib/hooks";
 import { fetchSnippetMetadata } from "../utils";
-import { useEffect, useState } from "react";
-import VideoPlayer from "@/components/video-player";
 
 const EditorPage = () => {
   const hasMounted = useHasMounted();
   const pathname = usePathname();
   const [description, setDescription] = useState<string>();
   const [videoSrc, setVideoSrc] = useState<string>();
-  const [videoMap, setVideoMap] = useState<string>();
-  const [videoCode, setVideoCode] = useState<string>();
+  const [videoMap, setVideoMap] = useState<any>();
+
+  const [shouldUpdate, setShouldUpdate] = useState(true);
+
+  const [editor, setEditor] = useAtom(editorAtom);
+  const [player, setplayer] = useAtom(playerAtom);
 
   const url = new URL(window.location.href);
   const searchParams = new URLSearchParams(url.search);
-
   const codeParam = searchParams.get("code");
   const id = searchParams.get("id");
 
@@ -49,57 +58,84 @@ const EditorPage = () => {
       fetchAndSetMetadata(id);
     }
   }, [id, hasMounted]);
-  if (!hasMounted) return null; // todo: fix this?
 
-  const checkVideoMap = (player: any, map: [number, string][]) => {
-    if (player) {
-      const playerTimestamp: number = player.getCurrentTime();
-      for (const [mapTimestamp, mapCode] of map) {
-        if (playerTimestamp <= mapTimestamp) {
-          setVideoCode(mapCode);
-          break;
-        }
-      }
-    }
-  };
-
-  const code = videoCode
-    ? videoCode
-    : codeParam
+  const codeDecoded = codeParam
     ? bytesToUtf8(base64url.decode(codeParam))
     : "// Write your code here";
 
+  const updateSearchParamsDebounced = debounce(
+    (
+      value: string | undefined,
+      ev: monaco_editor.editor.IModelContentChangedEvent
+    ) => {
+      searchParams.set("code", base64url.encode(utf8ToBytes(value ?? "")));
+      window.history.pushState(
+        {},
+        "",
+        `${pathname}?${searchParams.toString()}`
+      );
+    },
+    1500
+  );
+
   return (
-    <div className="p-4">
-      <h2 className="text-lg mb-3">My Snippet</h2>
-      {description ? (
-        <div>
-          <div>Description</div>
-          <p>{description}</p>
-        </div>
-      ) : (
-        <></>
-      )}
-      {videoSrc && videoMap ? (
-        <VideoPlayer
-          id={videoSrc}
-          map={videoMap as any}
-          checkVideoMap={checkVideoMap}
-        ></VideoPlayer>
-      ) : (
-        <></>
-      )}
+    <div className="p-4" key={id}>
+      <h2 className="text-lg mb-3">{id}</h2>
+      <div className="flex flex-col justify-between">
+        {description && (
+          <div className="">
+            <div>Description</div>
+            <p>{description}</p>
+          </div>
+        )}
+        {videoSrc && videoMap && (
+          <VideoPlayer
+            id={videoSrc}
+            map={videoMap as any}
+            shouldUpdate={shouldUpdate}
+          />
+        )}
+      </div>
+
       <WrappedEditor
-        code={code}
-        onChange={debounce((value) => {
-          searchParams.set("code", base64url.encode(utf8ToBytes(value ?? "")));
-          window.history.pushState(
-            {},
-            "",
-            `${pathname}?${searchParams.toString()}`
-          );
-        }, 1500)}
+        code={codeDecoded}
+        onChange={(value, event) => {
+          if (shouldUpdate) {
+            const timestamp = player?.getCurrentTime();
+            const wanted = getWantedCode(timestamp, videoMap);
+            if (value !== wanted) setShouldUpdate(false);
+          }
+          updateSearchParamsDebounced(value, event);
+        }}
       />
+
+      <div className="flex justify-between my-3">
+        {editor && <RunButton />}
+        {editor && (
+          <Button
+            onClick={() => {
+              const timestamp = player?.getCurrentTime();
+              const code = getWantedCode(timestamp, videoMap);
+              editor?.setValue(code);
+              editor?.focus();
+              editor?.render(true);
+              setShouldUpdate(true);
+            }}
+            disabled={shouldUpdate}
+            text="Reset"
+          />
+        )}
+        <div className="flex justify-center text-gray-600 cursor-default">
+          <div className="flex items-center justify-center pr-0.5 w-[31px] h-[25px] border shadow-[0_1px_1px_1px_rgba(0,0,0,0.15)]  rounded-lg border-gray-400 text-gray-500 bg-gray-200">
+            ⌘
+          </div>
+          <div className="mx-0.5">+</div>
+          <div className="flex items-center justify-center w-[31px] h-[25px] border shadow-[0_1px_1px_1px_rgba(0,0,0,0.15)]  rounded-lg border-gray-400 text-gray-500 bg-gray-200 text-[12px]">
+            ⏎
+          </div>
+        </div>
+      </div>
+      <div id="console-container" />
     </div>
   );
 };

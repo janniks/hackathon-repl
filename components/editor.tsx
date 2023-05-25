@@ -1,16 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import Editor from "@monaco-editor/react";
-import * as monaco_editor from "monaco-editor";
 
+import { fetchDeps } from "@/app/utils";
+import Editor from "@monaco-editor/react";
+import { useAtom } from "jotai";
+import * as monaco_editor from "monaco-editor";
+import { editorAtom } from "../lib/atoms";
 import { regexTokeniser } from "../lib/auto-import";
 import AutoImport from "../lib/auto-import/auto-complete";
-import { fetchDeps } from "@/app/utils";
-import RunButton from "./run-button";
-import Button from "./button";
-
-import GENERATED from "../generated.json";
-import { useHotkeys } from "react-hotkeys-hook";
 
 const WrappedEditor = ({
   code,
@@ -22,13 +18,7 @@ const WrappedEditor = ({
     ev: monaco_editor.editor.IModelContentChangedEvent
   ) => void;
 }) => {
-  const [editor, setEditor] =
-    useState<monaco_editor.editor.IStandaloneCodeEditor>();
-
-  useEffect(() => {
-    if (!editor) return;
-    editor.setValue(code);
-  }, [code, editor]);
+  const [editor, setEditor] = useAtom(editorAtom);
 
   async function beforeMount(monaco: typeof monaco_editor) {
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
@@ -64,13 +54,8 @@ const WrappedEditor = ({
     setEditor(mountedEditor);
   }
 
-  const editorContainer = {
-    width: "80%",
-    margin: "auto",
-    paddingTop: "10em",
-  };
   return (
-    <div style={editorContainer} id="editor-container">
+    <div id="editor-container">
       <Editor
         theme="vs-dark"
         height="500px"
@@ -80,23 +65,6 @@ const WrappedEditor = ({
         onMount={onMount}
         onChange={onChange}
       />
-      <div className="flex justify-between my-3">
-        {editor ? (
-          <RunButton editor={editor} />
-        ) : (
-          <Button text="Run" disabled={true}></Button>
-        )}
-        <div className="flex justify-center text-gray-600 cursor-default">
-          <div className="flex items-center justify-center pr-0.5 w-[31px] h-[25px] border shadow-[0_1px_1px_1px_rgba(0,0,0,0.15)]  rounded-lg border-gray-400 text-gray-500 bg-gray-200">
-            ⌘
-          </div>
-          <div className="mx-0.5">+</div>
-          <div className="flex items-center justify-center w-[31px] h-[25px] border shadow-[0_1px_1px_1px_rgba(0,0,0,0.15)]  rounded-lg border-gray-400 text-gray-500 bg-gray-200 text-[12px]">
-            ⏎
-          </div>
-        </div>
-      </div>
-      <div id="console-container"></div>
     </div>
   );
 };

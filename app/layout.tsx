@@ -5,7 +5,7 @@ import Script from "next/script";
 
 import WrappedEditor from "../components/editor";
 import { EXAMPLE_SCRIPTS } from "../lib/constants";
-import { utf8ToBytes } from "../lib/helpers";
+import { bytesToUtf8, utf8ToBytes } from "../lib/helpers";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,50 +22,60 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`flex flex-col w-full min-h-screen ${inter.className}`}>
-        <nav className="flex justify-between p-10">
-          <Link href="/" className="self-start">
+      <body
+        className={`flex flex-col items-center min-h-screen ${inter.className}`}
+      >
+        <nav className="flex justify-between w-full p-10 max-w-[1400px]">
+          <Link href="/" className="">
             {/* todo: logo */}
             Snippets
           </Link>
-          <Link href="/" className="self-end">
+          <Link href="/" className="">
             {/* placeholder */}
             Top Snippets
           </Link>
-          <Link href="/" className="self-end">
+          <Link href="/" className="">
             My Account
           </Link>
         </nav>
 
-        <div className="flex-1 flex justify-between p-10">
-          <main className="flex-1 flex flex-col bg-gray-200">{children}</main>
-          {/* sidebar */}
-          <div className="flex flex-col bg-red-800 min-w-[20rem]">
-            {/* example snippets */}
-            <div className="text-xl mb-3">Example Snippets</div>
-            <div className="space-y-4">
-              {EXAMPLE_SCRIPTS.map((item, i) => (
-                <div key={i} className="flex border rounded p-3">
-                  <div>
-                    <div className="flex space-x-4">
-                      <p className="text-lg">{item.name}</p>
-                      <div>
-                        <Link
-                          className="bg-slate-500 font-mono px-1 py-0.5 rounded text-sm"
-                          href={`editor?code=${base64url.encode(
-                            utf8ToBytes(item.code)
-                          )}${item.id ? `&id=${item.id}` : ""}`}
-                        >
-                          Load {">"}
-                        </Link>
+        <div className="flex-1 p-10 w-full max-w-[1400px] min-w-0">
+          <div className="flex justify-between">
+            <main className="flex-1 flex flex-col bg-gray-200 min-w-0">
+              {children}
+            </main>
+            {/* sidebar */}
+            <div className="flex flex-col bg-red-800 pl-4 min-w-[20rem]">
+              {/* example snippets */}
+              <div className="text-xl mb-3">Example Snippets</div>
+              <div className="space-y-4">
+                {EXAMPLE_SCRIPTS.map((item, i) => (
+                  <div key={i} className="flex border rounded p-3">
+                    <div>
+                      <div className="flex space-x-4">
+                        <p className="text-lg">{item.name}</p>
+                        <div>
+                          <Link
+                            className="bg-slate-500 font-mono px-1 py-0.5 rounded text-sm"
+                            href={`editor?code=${item.codeBase64Url}${
+                              item.id ? `&id=${item.id}` : ""
+                            }`}
+                          >
+                            Load {">"}
+                          </Link>
+                        </div>
                       </div>
+                      {/* <pre className="text-xs">
+                        <code>
+                          {excerpt(
+                            bytesToUtf8(base64url.decode(item.codeBase64Url))
+                          )}
+                        </code>
+                      </pre> */}
                     </div>
-                    <pre className="text-sm">
-                      <code>{item.code}</code>
-                    </pre>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -90,8 +100,15 @@ export default function RootLayout({
           }`}
         </Script>
         <Script src="https://www.youtube.com/iframe_api"></Script>
-        <footer className="p-10 bg-blue-800">Footer</footer>
+        <footer className="flex p-10 w-full max-w-[1400px] bg-blue-800">
+          Footer
+        </footer>
       </body>
     </html>
   );
+}
+
+function excerpt(code: string) {
+  // last 7 lines
+  return code.split("\n").slice(-2).filter(Boolean).join("\n");
 }

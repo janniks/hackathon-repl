@@ -1,26 +1,23 @@
 {
   "description": "This is an example of how to run a contract. Play the video and follow along in the live code editor!",
-  "videoSrc": "M7lc1UVf-VE",
+  "videoSrc": "sjLAK-M3WiY",
   "videoMap": [
-    [5, ""],
-    [5.5, "con"],
-    [6, "conso"],
-    [6.5, "console"],
-    [7, "console"],
-    [7.5, "console.l"],
-    [8, "console.log"],
-    [8.5, "console.log('"],
-    [9, "console.log('te"],
-    [9.5, "console.log('test"],
-    [10, "console.log('testin"],
-    [10.5, "console.log('testing some "],
-    [11, "console.log('testing some st"],
-    [11.5, "console.log('testing some stig"],
-    [12, "console.log('testing some st"],
-    [12.5, "console.log('testing some stuf"],
-    [13, "console.log('testing some stuff "],
-    [13.5, "console.log('testing some stuff he"],
-    [14, "console.log('testing some stuff here"],
-    [14.5, "console.log('testing some stuff here')"]
+    [18.4, ""],
+    [
+      28.8,
+      "import {\n\tbufferCVFromString,\n\tcallReadOnlyFunction,\n\tuintCV,\n  } from \"@stacks/transactions\";\nimport { StacksMainnet } from \"@stacks/network\";\n\n"
+    ],
+    [
+      55.5,
+      "import {\n\tbufferCVFromString,\n\tcallReadOnlyFunction,\n\tuintCV,\n  } from \"@stacks/transactions\";\nimport { StacksMainnet } from \"@stacks/network\";\n\nconst contractAddress = \"SP000000000000000000002Q6VF78\";\nconst contractName = \"pox-2\";\nconst functionName = \"reward-cycle-to-burn-height\";\nconst cycle = uintCV(1);\nconst network = new StacksMainnet();\nconst senderAddress = \"SP3HHGW68DAV4RXVXNWENSQPAFX6HQQW40XEEHVWE\";\n\n"
+    ],
+    [
+      60,
+      "import {\n\tbufferCVFromString,\n\tcallReadOnlyFunction,\n\tuintCV,\n  } from \"@stacks/transactions\";\nimport { StacksMainnet } from \"@stacks/network\";\n\nconst contractAddress = \"SP000000000000000000002Q6VF78\";\nconst contractName = \"pox-2\";\nconst functionName = \"reward-cycle-to-burn-height\";\nconst cycle = uintCV(1);\nconst network = new StacksMainnet();\nconst senderAddress = \"SP3HHGW68DAV4RXVXNWENSQPAFX6HQQW40XEEHVWE\";\n\nconst options = {\n  contractAddress,\n  contractName,\n  functionName,\n  functionArgs: [cycle],\n  network,\n  senderAddress,\n};\n\n"
+    ],
+    [
+      61,
+      "import {\n\tbufferCVFromString,\n\tcallReadOnlyFunction,\n\tuintCV,\n  } from \"@stacks/transactions\";\nimport { StacksMainnet } from \"@stacks/network\";\n\nconst contractAddress = \"SP000000000000000000002Q6VF78\";\nconst contractName = \"pox-2\";\nconst functionName = \"reward-cycle-to-burn-height\";\nconst cycle = uintCV(1);\nconst network = new StacksMainnet();\nconst senderAddress = \"SP3HHGW68DAV4RXVXNWENSQPAFX6HQQW40XEEHVWE\";\n\nconst options = {\n  contractAddress,\n  contractName,\n  functionName,\n  functionArgs: [cycle],\n  network,\n  senderAddress,\n};\n\nconst result = await callReadOnlyFunction(options);\nconsole.log(result.value.toString());"
+    ]
   ]
 }
