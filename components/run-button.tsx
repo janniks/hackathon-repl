@@ -66,6 +66,47 @@ const RunButton = () => {
                     const timeTag = "<span style='color: rgb(151 149 149)'>" + formattedTime + "\t" + "</span>";
                     return "<pre style='white-space:pre-wrap'>" + timeTag + value + "</pre>";
                 }).join(" ");
+            },
+            error: (...args) => {
+                parent.innerHTML += args.map((arg) => {
+                    let value;
+                    if (arg instanceof Error) {
+                        value = escapeHtml(
+                            JSON.stringify(
+                            { ...arg, message: arg.message, stack: arg.stack },
+                            null,
+                            2
+                            )
+                        );
+                    } else if (typeof arg === "object") {
+                        try {
+                            value = escapeHtml(
+                                JSON.stringify(
+                                    arg,
+                                    (key, value) => {
+                                        return typeof value === 'bigint'
+                                                    ? value.toString()
+                                                    : value;
+                                    },
+                                2)
+                            );
+                        } catch {
+                            value = escapeHtml(arg);
+                        }
+                    } else if (typeof arg === "string") {
+                        value = escapeHtml(arg)
+                    } else {
+                        value = escapeHtml("" + arg);
+                    }
+                    const currentDate = new Date();
+                    const hours = ('0' + currentDate.getHours()).slice(-2);
+                    const minutes = ('0' + currentDate.getMinutes()).slice(-2);
+                    const seconds = ('0' + currentDate.getSeconds()).slice(-2);
+                    const milliseconds = ('0' + currentDate.getMilliseconds()).slice(-2);
+                    const formattedTime = hours + ':' + minutes + ':' + seconds + "." + milliseconds;
+                    const timeTag = "<span style='color: rgb(151 149 149)'>" + formattedTime + "\t" + "</span>";
+                    return "<pre style='white-space:pre-wrap; color: red'>" + timeTag + value + "</pre>";
+                }).join(" ");
             }
         };
         ${code}
