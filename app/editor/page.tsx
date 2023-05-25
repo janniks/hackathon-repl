@@ -5,7 +5,13 @@ import { debounce } from "debounce";
 import { useAtom } from "jotai";
 import * as monaco_editor from "monaco-editor";
 import { usePathname, useSearchParams } from "next/navigation";
-import { CSSProperties, HTMLAttributes, useEffect, useState } from "react";
+import {
+  CSSProperties,
+  HTMLAttributes,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import Button from "../../components/button";
 import WrappedEditor from "../../components/editor";
@@ -27,6 +33,9 @@ const EditorPage = () => {
   const [editor, setEditor] = useAtom(editorAtom);
   const [player, setplayer] = useAtom(playerAtom);
 
+  const titleRef = useRef<string>("");
+  const descriptionRef = useRef<string>("");
+
   const searchParams = useSearchParams();
 
   const id = searchParams.get("id");
@@ -39,6 +48,11 @@ const EditorPage = () => {
   const descriptionDecoded = description
     ? bytesToUtf8(base64url.decode(description))
     : "";
+
+  useEffect(() => {
+    titleRef.current = titleDecoded;
+    descriptionRef.current = descriptionDecoded;
+  }, [titleDecoded, descriptionDecoded]);
 
   const fetchAndSetMetadata = async (id: string) => {
     const result = await fetchSnippetMetadata(id);
@@ -58,34 +72,29 @@ const EditorPage = () => {
     };
   }, [id, hasMounted]);
 
-  const updateSearchParamsDebounced = debounce(
-    (
-      value: string | undefined,
-      ev: monaco_editor.editor.IModelContentChangedEvent
-    ) => {
-      const s = new URLSearchParams(Array.from(searchParams.entries()));
-      s.set("code", base64url.encode(utf8ToBytes(value ?? "")));
-      window.history.pushState({}, "", `${pathname}?${s.toString()}`);
-    },
-    1500
-  );
-
-  const updateTitleDebounced = debounce((value: string | undefined) => {
-    const s = new URLSearchParams(Array.from(searchParams.entries()));
-    s.set("t", base64url.encode(utf8ToBytes(value ?? "")));
-    window.history.pushState({}, "", `${pathname}?${s.toString()}`);
+  const updateSearchParamsDebounced = debounce(() => {
+    const params = new URLSearchParams([
+      ["id", id ?? ""],
+      ["code", base64url.encode(utf8ToBytes(editor?.getValue() ?? ""))],
+      ["t", titleRef.current ?? ""],
+      ["d", descriptionRef.current ?? ""],
+    ]);
+    window.history.pushState({}, "", `${pathname}?${params.toString()}`);
   }, 500);
 
-  const updateDescriptionDebounced = debounce((value: string | null) => {
-    const s = new URLSearchParams(Array.from(searchParams.entries()));
-    s.set("d", base64url.encode(utf8ToBytes(value ?? "")));
-    window.history.pushState({}, "", `${pathname}?${s.toString()}`);
+  const updateTitleDebounced = debounce((value: string | undefined) => {
+    titleRef.current = base64url.encode(utf8ToBytes(value ?? ""));
+    updateSearchParamsDebounced();
+  }, 500);
+
+  const updateDescriptionDebounced = debounce((value: string | undefined) => {
+    descriptionRef.current = base64url.encode(utf8ToBytes(value ?? ""));
+    updateSearchParamsDebounced();
   }, 500);
 
   const consoleStyles: CSSProperties = {
     minHeight: "100px",
     background: "#232328",
-    opacity: 0.9,
     borderTop: "solid 3px #18181c",
     borderBottomLeftRadius: "4px",
     borderBottomRightRadius: "4px",
@@ -138,7 +147,7 @@ const EditorPage = () => {
                 const wanted = getWantedCode(timestamp, videoMap);
                 if (value !== wanted) setShouldUpdate(false);
               }
-              updateSearchParamsDebounced(value, event);
+              updateSearchParamsDebounced();
             }}
           />
         </div>

@@ -7,6 +7,7 @@ import WrappedEditor from "../components/editor";
 import { EXAMPLE_SCRIPTS } from "../lib/constants";
 import { bytesToUtf8, utf8ToBytes } from "../lib/helpers";
 import "./globals.css";
+import { parse } from "path";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,35 +36,12 @@ export default function RootLayout({
           <div className="flex justify-between">
             <main className="flex-1 flex flex-col min-w-0">{children}</main>
             {/* sidebar */}
-            <div className="flex flex-col pl-4 min-w-[20rem]">
+            <div className="flex-initial flex flex-col pl-4 max-w-[16rem]">
               {/* example snippets */}
-              <div className="text-xl mb-3">Example Snippets</div>
+              <div className="text-zinc-200 text-xl mb-3">Example Snippets</div>
               <div className="space-y-4">
-                {EXAMPLE_SCRIPTS.map((item, i) => (
-                  <div key={i} className="flex border rounded p-3">
-                    <div>
-                      <div className="flex space-x-4">
-                        <p className="text-lg">{item.name}</p>
-                        <div>
-                          <Link
-                            className="bg-slate-500 font-mono px-1 py-0.5 rounded text-sm"
-                            href={`editor?code=${item.codeBase64Url}${
-                              item.id ? `&id=${item.id}` : ""
-                            }`}
-                          >
-                            Load {">"}
-                          </Link>
-                        </div>
-                      </div>
-                      {/* <pre className="text-xs">
-                        <code>
-                          {excerpt(
-                            bytesToUtf8(base64url.decode(item.codeBase64Url))
-                          )}
-                        </code>
-                      </pre> */}
-                    </div>
-                  </div>
+                {EXAMPLE_SCRIPTS.map((snippet, i) => (
+                  <ExampleSnippet key={i} params={snippet.params} />
                 ))}
               </div>
             </div>
@@ -97,6 +75,39 @@ export default function RootLayout({
     </html>
   );
 }
+
+interface Details {
+  id: string;
+  code: string;
+  t: string;
+  d: string;
+}
+
+const ExampleSnippet = ({ params }: { params: string }) => {
+  const parsed = new URLSearchParams(params);
+
+  const title = bytesToUtf8(base64url.decode(parsed.get("t") ?? ""));
+  const description = bytesToUtf8(base64url.decode(parsed.get("d") ?? ""));
+
+  return (
+    <div className="flex border border-zinc-500 bg-zinc-700 rounded p-3">
+      <div>
+        <div className="flex space-x-4">
+          <p className="text-zinc-50">{title}</p>
+          {/* <p className="">{description.slice(0, 100)}</p> */}
+          <div>
+            <Link
+              className="bg-[#FF5500] hover:opacity-90 transition-opacity font-mono px-2 py-1 rounded text-sm whitespace-nowrap"
+              href={`editor?${params}`}
+            >
+              Load {">"}
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 function excerpt(code: string) {
   // last 7 lines

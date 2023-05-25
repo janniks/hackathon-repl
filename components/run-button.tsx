@@ -137,6 +137,12 @@ const RunButton = () => {
   // hot key for outside the editor
   //   useHotkeys(["ctrl+enter", "meta+enter"], runCode, []);
 
-  return <Button text={"Run"} onClick={runCode} />;
+  return (
+    <Button
+      className="text-[#a70d45] bg-[#FF9ECF] hover:bg-[#fe68b0]"
+      text={"Run"}
+      onClick={runCode}
+    />
+  );
 };
 export default RunButton;
