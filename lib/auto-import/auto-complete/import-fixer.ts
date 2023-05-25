@@ -76,7 +76,7 @@ export class ImportFixer {
     }));
     const imports = parsed.filter(
       ({ path }) =>
-        path === imp.file.path || imp.file.aliases.indexOf(path) > -1
+        path === imp.file.path || (imp.file.aliases?.indexOf(path) ?? -1) > -1
     );
 
     const importResolved =
@@ -133,7 +133,7 @@ export class ImportFixer {
     endline: boolean = false
   ): string {
     const path =
-      "path" in imp ? imp.path : imp.file.aliases[0] || imp.file.path;
+      "path" in imp ? imp.path : imp.file?.aliases?.[0] || imp.file.path;
 
     const formattedPath = path.replace(/\"/g, "").replace(/\'/g, "");
     let returnStr = "";
@@ -157,18 +157,18 @@ export class ImportFixer {
     return returnStr;
   }
 
-  private getRelativePath(document, importObj: Monaco.Uri | any): string {
+  private getRelativePath(document: any, importObj: Monaco.Uri | any): string {
     return importObj;
     // return importObj.discovered
     //   ? importObj.fsPath
     //   : path.relative(path.dirname(document.fileName), importObj.fsPath)
   }
 
-  private normaliseRelativePath(importObj, relativePath: string): string {
-    const removeFileExtenion = (rp) =>
+  private normaliseRelativePath(importObj: any, relativePath: string): string {
+    const removeFileExtenion = (rp: any) =>
       rp ? rp.substring(0, rp.lastIndexOf(".")) : rp;
 
-    const makeRelativePath = (rp) => {
+    const makeRelativePath = (rp: any) => {
       let preAppend = "./";
 
       if (!rp.startsWith(preAppend)) {
