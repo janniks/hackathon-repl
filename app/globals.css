@@ -25,3 +25,7 @@ body {
     )
     rgb(var(--background-start-rgb));
 } */
+
+div.monaco-editor {
+  padding-top: 10px !important;
+}

@@ -10,10 +10,12 @@
     "generate": "./scripts/generate.sh > generated.json"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.6.1",
     "@monaco-editor/react": "^4.5.1",
     "@scure/base": "^1.1.1",
     "@stacks/connect": "^7.3.1",
     "autoprefixer": "10.4.14",
+    "clsx": "^1.2.1",
     "debounce": "^1.2.1",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.3",
@@ -24,6 +26,7 @@
     "react-dom": "18.2.0",
     "react-hotkeys-hook": "^4.4.0",
     "react-use": "^17.4.0",
+    "tailwind-merge": "^1.12.0",
     "tailwindcss": "3.3.2",
     "typescript": "5.0.4",
     "usehooks-ts": "^2.9.1"

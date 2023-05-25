@@ -23,29 +23,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`flex flex-col items-center min-h-screen ${inter.className}`}
+        className={`flex flex-col items-center min-h-screen bg-[#232329] ${inter.className}`}
       >
         <nav className="flex justify-between w-full p-10 max-w-[1400px]">
           <Link href="/" className="">
-            {/* todo: logo */}
-            Snippets
-          </Link>
-          <Link href="/" className="">
-            {/* placeholder */}
-            Top Snippets
-          </Link>
-          <Link href="/" className="">
-            My Account
+            <img src="/logo.svg" alt="" className="h-[46px]" />
           </Link>
         </nav>
 
         <div className="flex-1 p-10 w-full max-w-[1400px] min-w-0">
           <div className="flex justify-between">
-            <main className="flex-1 flex flex-col bg-gray-200 min-w-0">
-              {children}
-            </main>
+            <main className="flex-1 flex flex-col min-w-0">{children}</main>
             {/* sidebar */}
-            <div className="flex flex-col bg-red-800 pl-4 min-w-[20rem]">
+            <div className="flex flex-col pl-4 min-w-[20rem]">
               {/* example snippets */}
               <div className="text-xl mb-3">Example Snippets</div>
               <div className="space-y-4">

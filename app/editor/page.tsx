@@ -1,5 +1,10 @@
 "use client";
-
+import {
+  Editable,
+  EditableInput,
+  EditableTextarea,
+  EditablePreview,
+} from "@chakra-ui/react";
 import VideoPlayer, { getWantedCode } from "@/components/video-player";
 import { base64url } from "@scure/base";
 import { debounce } from "debounce";
@@ -19,7 +24,7 @@ import { fetchSnippetMetadata } from "../utils";
 const EditorPage = () => {
   const hasMounted = useHasMounted();
   const pathname = usePathname();
-  const [description, setDescription] = useState<string>();
+
   const [videoSrc, setVideoSrc] = useState<string>();
   const [videoMap, setVideoMap] = useState<any>();
 
@@ -30,23 +35,22 @@ const EditorPage = () => {
 
   const searchParams = useSearchParams();
 
-  const codeParam = searchParams.get("code");
   const id = searchParams.get("id");
+  const code = searchParams.get("code");
+  const title = searchParams.get("t");
+  const description = searchParams.get("d");
 
-  console.log("id", id);
-  console.log("codeParam", codeParam);
+  const codeDecoded = code ? bytesToUtf8(base64url.decode(code)) : "";
+  const titleDecoded = title ? bytesToUtf8(base64url.decode(title)) : "";
+  const descriptionDecoded = description
+    ? bytesToUtf8(base64url.decode(description))
+    : "";
 
   const fetchAndSetMetadata = async (id: string) => {
     const result = await fetchSnippetMetadata(id);
     if (!result) return;
-    const {
-      description: snippetDescription,
-      videoSrc: snippetVideoSrc,
-      videoMap: snippetVideoMap,
-    } = JSON.parse(result);
-    if (snippetDescription) {
-      setDescription(snippetDescription);
-    }
+    const { videoSrc: snippetVideoSrc, videoMap: snippetVideoMap } =
+      JSON.parse(result);
     if (snippetVideoSrc && snippetVideoMap) {
       setVideoSrc(snippetVideoSrc);
       setVideoMap(snippetVideoMap);
@@ -55,13 +59,10 @@ const EditorPage = () => {
   useEffect(() => {
     if (hasMounted && id) fetchAndSetMetadata(id);
     return () => {
-      setDescription(undefined);
       setVideoSrc(undefined);
       setVideoMap(undefined);
     };
   }, [id, hasMounted]);
-
-  const codeDecoded = codeParam ? bytesToUtf8(base64url.decode(codeParam)) : "";
 
   const updateSearchParamsDebounced = debounce(
     (
@@ -75,16 +76,36 @@ const EditorPage = () => {
     1500
   );
 
+  const updateTitleDebounced = debounce((value: string | undefined) => {
+    const s = new URLSearchParams(Array.from(searchParams.entries()));
+    s.set("t", base64url.encode(utf8ToBytes(value ?? "")));
+    window.history.pushState({}, "", `${pathname}?${s.toString()}`);
+  }, 500);
+
+  const updateDescriptionDebounced = debounce((value: string | undefined) => {
+    const s = new URLSearchParams(Array.from(searchParams.entries()));
+    s.set("d", base64url.encode(utf8ToBytes(value ?? "")));
+    window.history.pushState({}, "", `${pathname}?${s.toString()}`);
+  }, 500);
+
   return (
-    <div className="p-4" key={id}>
-      <h2 className="text-lg mb-3">{id}</h2>
-      <div className="flex flex-col justify-between">
-        {description && (
-          <div className="">
-            <div>Description</div>
-            <p>{description}</p>
-          </div>
-        )}
+    <div
+      className="text-white border border-zinc-500 p-4 space-y-4 bg-zinc-700 shadow-[0_2px_2px_0_rgba(0,0,0,0.9)] rounded-lg"
+      key={id}
+    >
+      <input
+        className="text-lg bg-transparent w-full"
+        placeholder="Title"
+        defaultValue={titleDecoded}
+        onChange={(e) => updateTitleDebounced(e.target.value)}
+      />
+      <div className="text-zinc-200 flex flex-col justify-between">
+        <textarea
+          className="bg-transparent"
+          placeholder="Description"
+          defaultValue={descriptionDecoded}
+          onChange={(e) => updateDescriptionDebounced(e.target.value)}
+        />
         {videoSrc && videoMap && (
           <VideoPlayer
             key={id}
@@ -115,8 +136,6 @@ const EditorPage = () => {
               const timestamp = player?.getCurrentTime();
               const code = getWantedCode(timestamp, videoMap);
               editor?.setValue(code);
-              editor?.focus();
-              editor?.render(true);
               setShouldUpdate(true);
             }}
             disabled={shouldUpdate}

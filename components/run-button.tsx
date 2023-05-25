@@ -2,11 +2,13 @@ import * as monaco_editor from "monaco-editor";
 import Button from "./button";
 import { useAtom } from "jotai";
 import { editorAtom } from "../lib/atoms";
+import { useHasMounted } from "../lib/hooks";
+import { use, useCallback, useEffect } from "react";
 
 const RunButton = () => {
   const [editor, setEditor] = useAtom(editorAtom);
 
-  async function runCode() {
+  const runCode = useCallback(() => {
     if (!editor) return;
 
     const code = editor.getValue();
@@ -77,19 +79,21 @@ const RunButton = () => {
     script.setAttribute("type", "module");
 
     document.head.appendChild(script);
-  }
+  }, [editor]);
 
-  // hot key for inside the editor
-  editor?.addAction({
-    id: "runit",
-    label: "Run it!",
-    keybindings: [
-      monaco_editor.KeyMod.CtrlCmd | monaco_editor.KeyCode.Enter,
-      monaco_editor.KeyMod.WinCtrl | monaco_editor.KeyCode.Enter,
-    ],
-    contextMenuGroupId: "2_execution",
-    run: runCode,
-  });
+  useEffect(() => {
+    // hot key for inside the editor
+    editor?.addAction({
+      id: "runit",
+      label: "Run it!",
+      keybindings: [
+        monaco_editor.KeyMod.CtrlCmd | monaco_editor.KeyCode.Enter,
+        monaco_editor.KeyMod.WinCtrl | monaco_editor.KeyCode.Enter,
+      ],
+      contextMenuGroupId: "2_execution",
+      run: runCode,
+    });
+  }, [editor, runCode]);
 
   // hot key for outside the editor
   //   useHotkeys(["ctrl+enter", "meta+enter"], runCode, []);

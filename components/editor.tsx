@@ -58,7 +58,7 @@ const WrappedEditor = ({
   }
 
   return (
-    <div id="editor-container">
+    <div id="editor-container" className="rounded-t-lg overflow-hidden">
       <Editor
         theme="hiroic"
         height="500px"
