@@ -32,10 +32,10 @@ const WrappedEditor = ({
 
   async function beforeMount(monaco: typeof monaco_editor) {
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
-      target: monaco.languages.typescript.ScriptTarget.ES2016,
+      target: monaco.languages.typescript.ScriptTarget.ES2020,
       allowNonTsExtensions: true,
       moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
-      module: monaco.languages.typescript.ModuleKind.CommonJS,
+      module: monaco.languages.typescript.ModuleKind.ESNext,
       noEmit: true,
       typeRoots: ["node_modules/@types"],
     });
