@@ -63,7 +63,7 @@ const VideoPlayer = ({
   }, 300);
 
   return (
-    <div className="flex-1 aspect-video mb-4">
+    <div className="flex-1 aspect-video mb-4" key={id}>
       <iframe
         id="player"
         className="w-full h-full"

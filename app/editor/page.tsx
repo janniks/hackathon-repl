@@ -5,7 +5,7 @@ import { base64url } from "@scure/base";
 import { debounce } from "debounce";
 import { useAtom } from "jotai";
 import * as monaco_editor from "monaco-editor";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import Button from "../../components/button";
@@ -28,10 +28,13 @@ const EditorPage = () => {
   const [editor, setEditor] = useAtom(editorAtom);
   const [player, setplayer] = useAtom(playerAtom);
 
-  const url = new URL(window.location.href);
-  const searchParams = new URLSearchParams(url.search);
+  const searchParams = useSearchParams();
+
   const codeParam = searchParams.get("code");
   const id = searchParams.get("id");
+
+  console.log("id", id);
+  console.log("codeParam", codeParam);
 
   const fetchAndSetMetadata = async (id: string) => {
     const result = await fetchSnippetMetadata(id);
@@ -50,30 +53,24 @@ const EditorPage = () => {
     }
   };
   useEffect(() => {
-    if (!hasMounted || !id) {
+    if (hasMounted && id) fetchAndSetMetadata(id);
+    return () => {
       setDescription(undefined);
       setVideoSrc(undefined);
       setVideoMap(undefined);
-    } else {
-      fetchAndSetMetadata(id);
-    }
+    };
   }, [id, hasMounted]);
 
-  const codeDecoded = codeParam
-    ? bytesToUtf8(base64url.decode(codeParam))
-    : "// Write your code here";
+  const codeDecoded = codeParam ? bytesToUtf8(base64url.decode(codeParam)) : "";
 
   const updateSearchParamsDebounced = debounce(
     (
       value: string | undefined,
       ev: monaco_editor.editor.IModelContentChangedEvent
     ) => {
-      searchParams.set("code", base64url.encode(utf8ToBytes(value ?? "")));
-      window.history.pushState(
-        {},
-        "",
-        `${pathname}?${searchParams.toString()}`
-      );
+      const s = new URLSearchParams(Array.from(searchParams.entries()));
+      s.set("code", base64url.encode(utf8ToBytes(value ?? "")));
+      window.history.pushState({}, "", `${pathname}?${s.toString()}`);
     },
     1500
   );
@@ -90,6 +87,7 @@ const EditorPage = () => {
         )}
         {videoSrc && videoMap && (
           <VideoPlayer
+            key={id}
             id={videoSrc}
             map={videoMap as any}
             shouldUpdate={shouldUpdate}
