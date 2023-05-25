@@ -21,10 +21,12 @@ const RunButton = ({
                 .replace(/'/g, "&#039;");
         }
         const oldConsole = console;
+        const parent = document.getElementById("console-container");
+        document.getElementById("editor-container").appendChild(parent);
+        parent.innerHTML = "";
         console = {
             log: (...args) => {
-                const parent = document.createElement("div");
-                parent.innerHTML = args.map((arg) => {
+                parent.innerHTML += args.map((arg) => {
                 if (arg instanceof Error) {
                     return (
                     "<pre style='white-space:pre-wrap'>" +
@@ -66,9 +68,6 @@ const RunButton = ({
                     return arg;//escapeHtml("" + arg);
                 }
                 }).join(" ");
-                document
-                .getElementById("editor-container")
-                .appendChild(parent);
             }
         };
         ${code}

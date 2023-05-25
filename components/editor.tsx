@@ -1,11 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Editor from "@monaco-editor/react";
 import * as monaco_editor from "monaco-editor";
 
 import { regexTokeniser } from "../lib/auto-import";
 import AutoImport from "../lib/auto-import/auto-complete";
-import { fetchDeps, fetchSnippet } from "@/app/utils";
+import { fetchDeps } from "@/app/utils";
 import RunButton from "./run-button";
 import Button from "./button";
 
@@ -24,6 +24,11 @@ const WrappedEditor = ({
 }) => {
   const [editor, setEditor] =
     useState<monaco_editor.editor.IStandaloneCodeEditor>();
+
+  useEffect(() => {
+    if (!editor) return;
+    editor.setValue(code);
+  }, [code, editor]);
 
   async function beforeMount(monaco: typeof monaco_editor) {
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
@@ -59,11 +64,6 @@ const WrappedEditor = ({
     setEditor(mountedEditor);
   }
 
-  async function setSnippet(snippetName: string) {
-    const snippet = await fetchSnippet(snippetName);
-    editor?.setValue(snippet);
-  }
-
   const editorContainer = {
     width: "80%",
     margin: "auto",
@@ -86,12 +86,6 @@ const WrappedEditor = ({
         ) : (
           <Button text="Run" disabled={true}></Button>
         )}
-        <Button
-          onclick={async () => {
-            await setSnippet("test");
-          }}
-          text={"Get Test Snippet"}
-        ></Button>
         <div className="flex justify-center text-gray-600 cursor-default">
           <div className="flex items-center justify-center pr-0.5 w-[31px] h-[25px] border shadow-[0_1px_1px_1px_rgba(0,0,0,0.15)]  rounded-lg border-gray-400 text-gray-500 bg-gray-200">
             ⌘
@@ -102,6 +96,7 @@ const WrappedEditor = ({
           </div>
         </div>
       </div>
+      <div id="console-container"></div>
     </div>
   );
 };

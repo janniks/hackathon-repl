@@ -70,8 +70,8 @@ const getCdnUrl = (pkgName: string, pkgVersion: string, pkgPath: string) => {
   return `https://cdn.jsdelivr.net/npm/${pkgName}@${pkgVersion}${pkgPath}`;
 };
 
-export async function fetchSnippet(snippetName: string) {
+export async function fetchSnippetMetadata(snippetName: string) {
   const cache = await caches.open("snippets");
-  const req = new Request(`/snippets/${snippetName}.js`);
+  const req = new Request(`/snippets/${snippetName}.json`);
   return await fetchOrGetFromCache(cache, req);
 }
