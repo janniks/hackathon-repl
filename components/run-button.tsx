@@ -12,6 +12,10 @@ const RunButton = () => {
     if (!editor) return;
 
     const code = editor.getValue();
+    const importLinesRegex =
+      /^import\s*(?:(?:(?:[\w*\s{},]*)\s*from)?\s*['"].+['"])?.*?(?:;|$)/gm;
+    const importStatements = code.match(importLinesRegex)?.join("\n") || "";
+    const notImportStatements = code.replace(importLinesRegex, "");
     const script = document.createElement("script");
 
     const consoleCode = `
@@ -111,7 +115,12 @@ const RunButton = () => {
                 }).join(" ");
             }
         };
-        ${code}
+        ${importStatements}
+        try {
+            ${notImportStatements}
+        } catch(e) {
+            console.error(e);
+        }
         console = oldConsole;
     `;
     script.innerHTML = consoleCode;
