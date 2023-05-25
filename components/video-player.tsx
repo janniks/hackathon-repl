@@ -1,6 +1,9 @@
 import Script from "next/script";
 import { useEffect, useState } from "react";
 import { useInterval } from "usehooks-ts";
+import * as monaco_editor from "monaco-editor";
+import { editorAtom, playerAtom } from "../lib/atoms";
+import { useAtom } from "jotai";
 
 enum PlayerStates {
   ended = 0,
@@ -13,15 +16,17 @@ enum PlayerStates {
 const VideoPlayer = ({
   id,
   map,
-  checkVideoMap,
+  shouldUpdate,
 }: {
   id: string;
   map: [number, string][];
-  checkVideoMap: any;
+  shouldUpdate: boolean;
 }) => {
-  const [player, setPlayer] = useState<any>();
+  const [editor, setEditor] = useAtom(editorAtom);
+  const [player, setPlayer] = useAtom(playerAtom);
+
   const [shouldUpdateCode, setShouldUpdateCode] = useState<boolean>(false);
-  const [code, setCode] = useState<string>();
+
   async function playerStateChange({ data }: { data: PlayerStates }) {
     if (data === PlayerStates.playing) {
       setShouldUpdateCode(true);
@@ -47,21 +52,31 @@ const VideoPlayer = ({
       setPlayer(player);
     };
   });
+
   useInterval(() => {
-    if (shouldUpdateCode) {
-      checkVideoMap(player, map);
-    }
-  }, 20);
+    if (!(shouldUpdate && player && editor && shouldUpdateCode)) return;
+
+    const playerTimestamp: number = player.getCurrentTime();
+    const wanted = getWantedCode(playerTimestamp, map);
+    const current = editor?.getValue();
+    if (wanted !== current) editor?.setValue(wanted);
+  }, 300);
 
   return (
-    <div>
+    <div className="flex-1 aspect-video mb-4">
       <iframe
         id="player"
-        width="640"
-        height="390"
+        className="w-full h-full"
         src={`http://www.youtube.com/embed/${id}?enablejsapi=1`}
-      ></iframe>
+      />
     </div>
   );
 };
 export default VideoPlayer;
+
+export function getWantedCode(timestamp: number, map: [number, string][]) {
+  for (const [mapTimestamp, mapCode] of map) {
+    if (timestamp <= mapTimestamp) return mapCode;
+  }
+  return map?.[map.length - 1]?.[1] ?? "";
+}
