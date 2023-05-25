@@ -1,9 +1,8 @@
-"use client";
-
-import { fetchDeps, getCustomTheme } from "@/app/utils";
+import { fetchDeps, getCustomTheme } from "@/lib/utils";
 import Editor from "@monaco-editor/react";
 import { useAtom } from "jotai";
 import * as monaco_editor from "monaco-editor";
+
 import { editorAtom } from "../lib/atoms";
 import { regexTokeniser } from "../lib/auto-import";
 import AutoImport from "../lib/auto-import/auto-complete";
@@ -19,6 +18,8 @@ const WrappedEditor = ({
   ) => void;
 }) => {
   const [editor, setEditor] = useAtom(editorAtom);
+
+  if (typeof window === "undefined") return null;
 
   async function beforeMount(monaco: typeof monaco_editor) {
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({

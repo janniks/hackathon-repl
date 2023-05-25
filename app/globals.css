@@ -25,3 +25,8 @@ body {
     )
     rgb(var(--background-start-rgb));
 } */
+
+.fake-placeholder-description:empty::before {
+  content: "Description";
+  color: gray;
+}

@@ -1,13 +1,6 @@
 export const EXAMPLE_SCRIPTS = [
   {
-    name: "Hello World",
-    codeBase64Url:
-      "aW1wb3J0IHsKICBidWZmZXJDVkZyb21TdHJpbmcsCiAgY2FsbFJlYWRPbmx5RnVuY3Rpb24sCiAgdWludENWLAp9IGZyb20gIkBzdGFja3MvdHJhbnNhY3Rpb25zIjsKaW1wb3J0IHsgU3RhY2tzTWFpbm5ldCB9IGZyb20gIkBzdGFja3MvbmV0d29yayI7Cgpjb25zdCBjb250cmFjdEFkZHJlc3MgPSAiU1AwMDAwMDAwMDAwMDAwMDAwMDAwMDJRNlZGNzgiOwpjb25zdCBjb250cmFjdE5hbWUgPSAicG94LTIiOwpjb25zdCBmdW5jdGlvbk5hbWUgPSAicmV3YXJkLWN5Y2xlLXRvLWJ1cm4taGVpZ2h0IjsKY29uc3QgY3ljbGUgPSB1aW50Q1YoMSk7CmNvbnN0IG5ldHdvcmsgPSBuZXcgU3RhY2tzTWFpbm5ldCgpOwpjb25zdCBzZW5kZXJBZGRyZXNzID0gIlNQM0hIR1c2OERBVjRSWFZYTldFTlNRUEFGWDZIUVFXNDBYRUVIVldFIjsKCmNvbnN0IG9wdGlvbnMgPSB7CiAgY29udHJhY3RBZGRyZXNzLAogIGNvbnRyYWN0TmFtZSwKICBmdW5jdGlvbk5hbWUsCiAgZnVuY3Rpb25BcmdzOiBbY3ljbGVdLAogIG5ldHdvcmssCiAgc2VuZGVyQWRkcmVzcywKfTsKCmNvbnN0IHJlc3VsdCA9IGF3YWl0IGNhbGxSZWFkT25seUZ1bmN0aW9uKG9wdGlvbnMpOwpjb25zb2xlLmxvZyhyZXN1bHQudmFsdWUudG9TdHJpbmcoKSk7",
-    id: "hello-world",
-  },
-  {
-    name: "Run a contract",
-    codeBase64Url: "",
-    id: "run-a-contract",
+    params:
+      "id=run-a-contract&code=&t=W0ludGVyYWN0aXZlXSBSZWFkLW9ubHkgZnVuY3Rpb24gY2FsbGluZw%3D%3D&d=VGhpcyBpcyBhbiBpbnRlcmFjdGl2ZSBndWlkIHRvIGxlYXJuaW5nIFN0YWNrcy5qcyDigJQgVGhlIHZpZGVvIHdpbGwgYXV0b21hdGljYWxseSB1cGRhdGUgdGhlIGNvZGUgZWRpdG9yIGJlbG93LgpGb2xsb3cgYWxvbmchCgpIaXQgdGhlICJSZXNldCIgYnV0dG9uIHRvIHVuZG8gYW55IGNoYW5nZXMgeW91IGFkZGVkIHRvIHRoZSBjb2RlLgpIYXZlIGZ1biDwn46J",
   },
 ];
