@@ -102,6 +102,7 @@ const WrappedEditor = ({
           </div>
         </div>
       </div>
+      <div id="console-container"></div>
     </div>
   );
 };
