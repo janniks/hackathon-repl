@@ -68,6 +68,11 @@ const WrappedEditor = ({
         beforeMount={beforeMount}
         onMount={onMount}
         onChange={onChange}
+        options={{
+          scrollBeyondLastLine: false,
+          //scrollbar: { alwaysConsumeMouseWheel: false },
+          padding: { bottom: 24 },
+        }}
       />
     </div>
   );
