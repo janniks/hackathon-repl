@@ -34,9 +34,9 @@ export default function RootLayout({
           </Link>
         </nav>
 
-        <div className="flex-1 px-5 pt-5 md:px-10 w-full max-w-[1400px] min-w-0">
-          <div className="flex flex-col space-y-10 lg:flex-row justify-between">
-            <main className="flex-1 flex flex-col min-w-0">{children}</main>
+        <div className="flex-1 flex justify-stretch px-5 pt-5 md:px-10 w-full max-w-[1400px] min-w-0">
+          <div className="flex-1 flex flex-col space-y-10 lg:flex-row lg:justify-between">
+            <main className="lg:flex-1 flex flex-col min-w-0">{children}</main>
             {/* sidebar */}
             <div className="flex-initial flex flex-col lg:pl-8 lg:max-w-[18rem]">
               {/* example snippets */}
