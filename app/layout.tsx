@@ -26,7 +26,7 @@ export default function RootLayout({
       <body
         className={`flex flex-col items-center min-h-screen bg-[#232329] ${inter.className}`}
       >
-        <nav className="flex justify-between w-full p-10 pb-5 max-w-[1400px]">
+        <nav className="flex justify-between w-full p-5 md:p-10 pb-5 max-w-[1400px]">
           <Link href="/" className="">
             <img
               src="/logo.svg"
@@ -36,7 +36,7 @@ export default function RootLayout({
           </Link>
         </nav>
 
-        <div className="flex-1 p-10 pt-5 w-full max-w-[1400px] min-w-0">
+        <div className="flex-1 px-5 pt-5 md:px-10 w-full max-w-[1400px] min-w-0">
           <div className="flex flex-col space-y-10 lg:flex-row justify-between">
             <main className="flex-1 flex flex-col min-w-0">{children}</main>
             {/* sidebar */}
@@ -71,7 +71,7 @@ export default function RootLayout({
             }
           }`}
         </Script>
-        <footer className="p-10 w-full bg-zinc-900 border-t-zinc-950 text-zinc-300 text-center font-['Aeonik_Fono']">
+        <footer className="p-5 md:p-10 w-full bg-zinc-900 border-t-zinc-950 text-zinc-300 text-center font-['Aeonik_Fono']">
           Hacked on by /-/iros 🧡
         </footer>
       </body>
