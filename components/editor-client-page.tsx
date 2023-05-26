@@ -97,7 +97,7 @@ const EditorClientPage = () => {
     overflow: "scroll",
     fontSize: "12px",
     maxHeight: "300px",
-    wordBreak: "break-word",
+    wordBreak: "break-all",
   };
 
   return (
