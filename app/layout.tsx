@@ -3,11 +3,9 @@ import { Inter } from "next/font/google";
 import Link from "next/link";
 import Script from "next/script";
 
-import WrappedEditor from "../components/editor";
 import { EXAMPLE_SCRIPTS } from "../lib/constants";
-import { bytesToUtf8, utf8ToBytes } from "../lib/helpers";
+import { bytesToUtf8 } from "../lib/helpers";
 import "./globals.css";
-import { parse } from "path";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -90,12 +88,12 @@ const ExampleSnippet = ({ params }: { params: string }) => {
   const parsed = new URLSearchParams(params);
 
   const title = bytesToUtf8(base64url.decode(parsed.get("t") ?? ""));
-  const description = bytesToUtf8(base64url.decode(parsed.get("d") ?? ""));
+  // const description = bytesToUtf8(base64url.decode(parsed.get("d") ?? ""));
 
   return (
     <Link
       href={`editor?${params}`}
-      className="flex space-x-4 justify-between border border-[#555666] bg-[#393940] rounded p-3 group-hover:bg-zinc-700 group-hover:border-zinc-500 group transition-colors"
+      className="flex space-x-4 justify-between border border-[#555666] bg-[#393940] rounded p-3 hover:bg-zinc-700 hover:border-zinc-500 group transition-colors"
     >
       <p className="flex-1 text-zinc-200 group-hover:text-zinc-100 text-sm transition-colors">
         {title}

@@ -90,8 +90,8 @@ const EditorClientPage = () => {
     minHeight: "100px",
     background: "#232328",
     borderTop: "solid 3px #18181c",
-    borderBottomLeftRadius: "4px",
-    borderBottomRightRadius: "4px",
+    borderBottomLeftRadius: "5px",
+    borderBottomRightRadius: "5px",
     padding: "1em",
     color: "#d6d3d2",
     overflow: "scroll",
@@ -153,7 +153,7 @@ const EditorClientPage = () => {
       <div className="flex justify-between my-3">
         <div>
           {editor && <RunButton />}
-          {editor && (
+          {editor && videoSrc && (
             <Button
               onClick={() => {
                 const code = getWantedCode(player?.getCurrentTime(), videoMap);

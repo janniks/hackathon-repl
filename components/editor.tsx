@@ -47,6 +47,7 @@ const WrappedEditor = ({
     mountedEditor: monaco_editor.editor.IStandaloneCodeEditor,
     monaco: typeof monaco_editor
   ) {
+    if (editor) return;
     const deps = await fetchDeps();
     const files = deps.map((dep) => ({
       path: dep.path,
