@@ -74,7 +74,12 @@ const getCdnUrl = (pkgName: string, pkgVersion: string, pkgPath: string) => {
 export async function fetchSnippetMetadata(snippetName: string) {
   const cache = await caches.open("snippets");
   const req = new Request(`/snippets/${snippetName}.json`);
-  return await fetchOrGetFromCache(cache, req);
+  try {
+    const result = await fetchOrGetFromCache(cache, req);
+    return result;
+  } catch (e) {
+    return "";
+  }
 }
 
 export function getCustomTheme(): monaco_editor.editor.IStandaloneThemeData {
