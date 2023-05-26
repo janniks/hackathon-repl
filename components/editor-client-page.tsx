@@ -165,13 +165,20 @@ const EditorClientPage = () => {
             />
           )}
         </div>
-        <div className="flex justify-center text-zinc-600 cursor-default">
-          <div className="flex items-center justify-center pr-0.5 w-[31px] h-[25px] border shadow-[0_2px_2px_0_rgba(0,0,0,0.4)] rounded-lg border-zinc-700 text-zinc-600 bg-zinc-300">
-            ⌘
+        <div
+          className="flex justify-center text-zinc-600 cursor-default space-x-0.5 opacity-95"
+          title="Run"
+        >
+          <div className="w-[34px] h-[27px] rounded-lg bg-gradient-to-b from-zinc-500 to-zinc-700 p-[1px] pt-[0] text-zinc-300 shadow-[0_2px_2px_1px_rgba(0,0,0,0.3)]">
+            <div className="flex h-full w-full items-center justify-center rounded-md bg-gradient-to-b from-zinc-300 to-zinc-400 text-zinc-900">
+              ⌘
+            </div>
           </div>
-          <div className="mx-0.5 text-zinc-300">+</div>
-          <div className="flex items-center justify-center w-[31px] h-[25px] border shadow-[0_2px_2px_0_rgba(0,0,0,0.4)] rounded-lg border-zinc-700 text-zinc-600 bg-zinc-300 text-[12px]">
-            ⏎
+          <div className=" text-zinc-300">+</div>
+          <div className="w-[34px] h-[27px] rounded-lg bg-gradient-to-b from-zinc-500 to-zinc-700 p-[1px] pt-[0] text-zinc-300 shadow-[0_2px_2px_1px_rgba(0,0,0,0.3)]">
+            <div className="flex h-full w-full items-center justify-center rounded-md bg-gradient-to-b from-zinc-300 to-zinc-400 text-zinc-900 text-[12px]">
+              ⏎
+            </div>
           </div>
         </div>
       </div>
