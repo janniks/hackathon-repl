@@ -51,6 +51,11 @@ const VideoPlayer = ({
       });
       setPlayer(player);
     };
+    const tag = document.createElement("script");
+    tag.src = "//www.youtube.com/iframe_api";
+    tag.id = "youtube-api-tag";
+    const firstScriptTag = document.getElementsByTagName("script")[0];
+    firstScriptTag?.parentNode?.insertBefore(tag, firstScriptTag);
   });
 
   useInterval(() => {
@@ -75,6 +80,7 @@ const VideoPlayer = ({
 export default VideoPlayer;
 
 export function getWantedCode(timestamp: number, map: [number, string][]) {
+  if (!map) return "";
   for (const [mapTimestamp, mapCode] of map) {
     if (timestamp <= mapTimestamp) return mapCode;
   }

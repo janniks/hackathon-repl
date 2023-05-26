@@ -67,8 +67,7 @@ export default function RootLayout({
             }
           }`}
         </Script>
-        <Script src="https://www.youtube.com/iframe_api"></Script>
-        <footer className="p-10 w-full max-w-[1400px] bg-zinc-900 border-t-zinc-950 text-zinc-300 text-center font-['Aeonik_Fono']">
+        <footer className="p-10 w-full bg-zinc-900 border-t-zinc-950 text-zinc-300 text-center font-['Aeonik_Fono']">
           Hacked on by /-/iros 🧡
         </footer>
       </body>
