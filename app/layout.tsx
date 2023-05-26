@@ -26,20 +26,20 @@ export default function RootLayout({
       <body
         className={`flex flex-col items-center min-h-screen bg-[#232329] ${inter.className}`}
       >
-        <nav className="flex justify-between w-full p-10 max-w-[1400px]">
+        <nav className="flex justify-between w-full p-10 pb-5 max-w-[1400px]">
           <Link href="/" className="">
             <img src="/logo.svg" alt="" className="h-[34px]" />
           </Link>
         </nav>
 
-        <div className="flex-1 p-10 w-full max-w-[1400px] min-w-0">
-          <div className="flex justify-between">
+        <div className="flex-1 p-10 pt-5 w-full max-w-[1400px] min-w-0">
+          <div className="flex flex-col space-y-10 lg:flex-row justify-between">
             <main className="flex-1 flex flex-col min-w-0">{children}</main>
             {/* sidebar */}
-            <div className="flex-initial flex flex-col pl-4 max-w-[16rem]">
+            <div className="flex-initial flex flex-col lg:pl-8 lg:max-w-[18rem]">
               {/* example snippets */}
               <div className="text-zinc-200 text-xl mb-3">Example Snippets</div>
-              <div className="space-y-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 lg:gap-0 lg:flex lg:flex-col lg:space-y-4">
                 {EXAMPLE_SCRIPTS.map((snippet, i) => (
                   <ExampleSnippet key={i} params={snippet.params} />
                 ))}
@@ -89,22 +89,20 @@ const ExampleSnippet = ({ params }: { params: string }) => {
   const description = bytesToUtf8(base64url.decode(parsed.get("d") ?? ""));
 
   return (
-    <div className="flex border border-zinc-500 bg-zinc-700 rounded p-3">
+    <Link
+      href={`editor?${params}`}
+      className="flex space-x-4 justify-between border border-[#555666] bg-[#393940] rounded p-3 group-hover:bg-zinc-700 group-hover:border-zinc-500 group transition-colors"
+    >
+      <p className="flex-1 text-zinc-200 group-hover:text-zinc-100 text-sm transition-colors">
+        {title}
+      </p>
+      {/* <p className="">{description.slice(0, 100)}</p> */}
       <div>
-        <div className="flex space-x-4">
-          <p className="text-zinc-50">{title}</p>
-          {/* <p className="">{description.slice(0, 100)}</p> */}
-          <div>
-            <Link
-              className="bg-[#FF5500] hover:opacity-90 transition-opacity font-mono px-2 py-1 rounded text-sm whitespace-nowrap"
-              href={`editor?${params}`}
-            >
-              Load {">"}
-            </Link>
-          </div>
-        </div>
+        <strong className="text-[#461104] group-hover:text-[#82290c] bg-[#FF5500] group-hover:bg-[#ff8f32] transition-colors px-2 py-1 rounded text-sm whitespace-nowrap">
+          Load
+        </strong>
       </div>
-    </div>
+    </Link>
   );
 };
 
