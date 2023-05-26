@@ -5,14 +5,15 @@ import Script from "next/script";
 
 import { EXAMPLE_SCRIPTS } from "../lib/constants";
 import { bytesToUtf8 } from "../lib/helpers";
+import * as motion from "../lib/motion";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
-  title: "Stacks.js REPL",
-  description: "Stacks.js REPL by Hiro.",
-};
+// export const metadata = {
+//   title: "Stacks.js REPL",
+//   description: "Stacks.js REPL by Hiro.",
+// };
 
 export default function RootLayout({
   children,
@@ -35,10 +36,15 @@ export default function RootLayout({
         </nav>
 
         <div className="flex-1 flex justify-stretch px-5 pt-5 md:px-10 w-full max-w-[1400px] min-w-0">
-          <div className="flex-1 flex flex-col space-y-10 lg:flex-row lg:justify-between">
+          <div className="flex-1 flex flex-col space-y-10 lg:space-y-0 lg:flex-row lg:justify-between">
             <main className="lg:flex-1 flex flex-col min-w-0">{children}</main>
             {/* sidebar */}
-            <div className="flex-initial flex flex-col lg:pl-8 lg:max-w-[18rem]">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.1 }}
+              className="flex-initial flex flex-col lg:pl-8 lg:max-w-[18rem]"
+            >
               {/* example snippets */}
               <div className="text-zinc-200 text-xl mb-3">Example Snippets</div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4 lg:gap-0 lg:flex lg:flex-col lg:space-y-4">
@@ -46,7 +52,7 @@ export default function RootLayout({
                   <ExampleSnippet key={i} params={snippet.params} />
                 ))}
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
         <Script type="importmap" id="importmap">

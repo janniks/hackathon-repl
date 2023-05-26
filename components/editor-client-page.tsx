@@ -101,7 +101,7 @@ const EditorClientPage = () => {
 
   return (
     <div
-      className="text-white border border-zinc-500 p-4 space-y-4 bg-zinc-700 shadow-[0_2px_2px_0_rgba(0,0,0,0.9)] rounded-lg"
+      className="text-white border border-zinc-500 p-4 space-y-4 bg-zinc-700 shadow-[0_2px_4px_0_rgba(0,0,0,0.5)] rounded-lg"
       key={id}
     >
       <input
@@ -169,14 +169,14 @@ const EditorClientPage = () => {
           className="flex justify-center text-zinc-600 cursor-default space-x-0.5 opacity-95"
           title="Run"
         >
-          <div className="w-[34px] h-[27px] rounded-lg bg-gradient-to-b from-zinc-500 to-zinc-700 p-[1px] pt-[0] text-zinc-300 shadow-[0_2px_2px_1px_rgba(0,0,0,0.3)]">
-            <div className="flex h-full w-full items-center justify-center rounded-md bg-gradient-to-b from-zinc-300 to-zinc-400 text-zinc-900">
+          <div className="w-[32px] h-[26px] rounded-lg bg-gradient-to-b from-zinc-500 to-zinc-700 p-[1px] pt-[0] text-zinc-300 shadow-[0_2px_2px_1px_rgba(0,0,0,0.3)]">
+            <div className="flex h-full w-full items-center justify-center rounded-md bg-gradient-to-b from-zinc-300 to-[#a7a7ae] text-zinc-900">
               ⌘
             </div>
           </div>
-          <div className=" text-zinc-300">+</div>
-          <div className="w-[34px] h-[27px] rounded-lg bg-gradient-to-b from-zinc-500 to-zinc-700 p-[1px] pt-[0] text-zinc-300 shadow-[0_2px_2px_1px_rgba(0,0,0,0.3)]">
-            <div className="flex h-full w-full items-center justify-center rounded-md bg-gradient-to-b from-zinc-300 to-zinc-400 text-zinc-900 text-[12px]">
+          <div className="text-zinc-300">+</div>
+          <div className="w-[32px] h-[26px] rounded-lg bg-gradient-to-b from-zinc-500 to-zinc-700 p-[1px] pt-[0] text-zinc-300 shadow-[0_2px_2px_1px_rgba(0,0,0,0.3)]">
+            <div className="flex h-full w-full items-center justify-center rounded-md bg-gradient-to-b from-zinc-300 to-[#a7a7ae] text-zinc-900 text-[12px]">
               ⏎
             </div>
           </div>

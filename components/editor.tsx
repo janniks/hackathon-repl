@@ -22,6 +22,8 @@ const WrappedEditor = ({
   if (typeof window === "undefined") return null;
 
   async function beforeMount(monaco: typeof monaco_editor) {
+    if (editor) return;
+
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
       target: monaco.languages.typescript.ScriptTarget.ES2020,
       allowNonTsExtensions: true,
