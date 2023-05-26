@@ -112,6 +112,7 @@ const EditorClientPage = () => {
       />
       <div
         contentEditable={true}
+        suppressContentEditableWarning={true}
         role="textbox"
         className="fake-placeholder-description w-full text-zinc-200 bg-transparent whitespace-break-spaces"
         placeholder="Description"
