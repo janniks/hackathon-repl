@@ -27,8 +27,8 @@ const EditorClientPage = () => {
   const [editor, setEditor] = useAtom(editorAtom);
   const [player, setplayer] = useAtom(playerAtom);
 
-  const titleRef = useRef<string>("");
-  const descriptionRef = useRef<string>("");
+  const titleRef = useRef<string | null>("");
+  const descriptionRef = useRef<string | null>("");
 
   const searchParams = useSearchParams();
 
@@ -44,9 +44,9 @@ const EditorClientPage = () => {
     : "";
 
   useEffect(() => {
-    titleRef.current = titleDecoded;
-    descriptionRef.current = descriptionDecoded;
-  }, [titleDecoded, descriptionDecoded]);
+    titleRef.current = title;
+    descriptionRef.current = description;
+  }, [title, description]);
 
   const fetchAndSetMetadata = async (id: string) => {
     const result = await fetchSnippetMetadata(id);
@@ -105,7 +105,7 @@ const EditorClientPage = () => {
       key={id}
     >
       <input
-        className="text-lg bg-transparent w-full"
+        className="text-lg bg-transparent w-full font-['Aeonik_Fono']"
         placeholder="Title"
         defaultValue={titleDecoded}
         onChange={(e) => updateTitleDebounced(e.target.value)}

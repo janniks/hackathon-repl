@@ -28,7 +28,7 @@ export default function RootLayout({
       >
         <nav className="flex justify-between w-full p-10 max-w-[1400px]">
           <Link href="/" className="">
-            <img src="/logo.svg" alt="" className="h-[46px]" />
+            <img src="/logo.svg" alt="" className="h-[34px]" />
           </Link>
         </nav>
 
@@ -68,8 +68,8 @@ export default function RootLayout({
           }`}
         </Script>
         <Script src="https://www.youtube.com/iframe_api"></Script>
-        <footer className="flex p-10 w-full max-w-[1400px] bg-blue-800">
-          Footer
+        <footer className="p-10 w-full max-w-[1400px] bg-zinc-900 border-t-zinc-950 text-zinc-300 text-center font-['Aeonik_Fono']">
+          Hacked on by /-/iros 🧡
         </footer>
       </body>
     </html>
