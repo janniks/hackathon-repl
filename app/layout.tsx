@@ -28,7 +28,11 @@ export default function RootLayout({
       >
         <nav className="flex justify-between w-full p-10 pb-5 max-w-[1400px]">
           <Link href="/" className="">
-            <img src="/logo.svg" alt="" className="h-[34px]" />
+            <img
+              src="/logo.svg"
+              alt="Stacks.js Playground"
+              className="h-[34px]"
+            />
           </Link>
         </nav>
 
