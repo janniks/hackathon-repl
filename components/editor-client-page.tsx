@@ -98,6 +98,8 @@ const EditorClientPage = () => {
     fontSize: "12px",
     maxHeight: "300px",
     wordBreak: "break-all",
+    msOverflowStyle: "none",
+    scrollbarWidth: "none",
   };
 
   return (
@@ -147,7 +149,11 @@ const EditorClientPage = () => {
             }}
           />
         </div>
-        <div id="console-container" style={consoleStyles} />
+        <div
+          id="console-container"
+          style={consoleStyles}
+          className="no-scrollbar"
+        />
       </div>
 
       {/* BUTTONS */}
