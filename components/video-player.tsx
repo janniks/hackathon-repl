@@ -72,7 +72,7 @@ const VideoPlayer = ({
       <iframe
         id="player"
         className="w-full h-full"
-        src={`http://www.youtube.com/embed/${id}?enablejsapi=1`}
+        src={`https://www.youtube.com/embed/${id}?enablejsapi=1`}
       />
     </div>
   );
